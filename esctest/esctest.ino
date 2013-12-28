@@ -39,9 +39,9 @@ void loop()
     while(Serial.available()==0)
     {
        esc1.writeMicroseconds(t);  
-  //     esc2.writeMicroseconds(t);  
- //      esc3.writeMicroseconds(t);  
-//       esc4.writeMicroseconds(t);  
+       esc2.writeMicroseconds(t);  
+       esc3.writeMicroseconds(t);  
+       esc4.writeMicroseconds(t);  
        delayMicroseconds(100);
     }
     
@@ -58,6 +58,9 @@ void loop()
       if(t<0)
       t=0;
       
+    }else if(b=='3')
+    {
+      t=700;
     }
     
     Serial.println(t);

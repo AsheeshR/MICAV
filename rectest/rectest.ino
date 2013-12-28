@@ -13,6 +13,7 @@ int ch1; // Here's where we'll keep our channel values
 int ch2;
 int ch3;
 int ch4;
+int ch5;
 
 void setup() {
 
@@ -20,6 +21,7 @@ void setup() {
   pinMode(6, INPUT);
   pinMode(9, INPUT);
   pinMode(10, INPUT);
+  pinMode(3, INPUT);
 
   Serial.begin(9600); // Pour a bowl of Serial
 
@@ -31,6 +33,8 @@ void loop() {
   ch2 = pulseIn(6, HIGH, 25000); // each channel
   ch3 = pulseIn(9, HIGH, 25000);
   ch4 = pulseIn(10, HIGH, 25000);
+  ch5 = pulseIn(3, HIGH, 25000);
+
   Serial.print("Channel 1:"); // Print the value of 
   Serial.print(ch1);        // each channel
 
@@ -41,8 +45,11 @@ void loop() {
   Serial.print(ch3);
   
   Serial.print(" Channel 4:");
-  Serial.println(ch4);
+  Serial.print(ch4);
 
-  delay(1000); // I put this here just to make the terminal 
+  Serial.print(" Channel 5:");
+  Serial.println(ch5);
+
+  delay(200); // I put this here just to make the terminal 
               // window happier
 }
