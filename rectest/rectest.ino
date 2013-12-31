@@ -1,14 +1,3 @@
-     
-/*
- RC PulseIn Serial Read out
- By: Nick Poole
- SparkFun Electronics
- Date: 5
- License: CC-BY SA 3.0 - Creative commons share-alike 3.0
- use this code however you'd like, just keep this license and
- attribute. Let me know if you make hugely, awesome, great changes.
- */
- 
 int ch1; // Here's where we'll keep our channel values
 int ch2;
 int ch3;
@@ -50,6 +39,6 @@ void loop() {
   Serial.print(" Channel 5:");
   Serial.println(ch5);
 
-  delay(200); // I put this here just to make the terminal 
+  delay(50); // I put this here just to make the terminal 
               // window happier
 }
