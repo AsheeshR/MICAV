@@ -2,9 +2,9 @@
 #include "driver.h"
 #include "constants.h"
 
-int ch1,ch4,thrust1, thrust2, thrust3, thrust4, yaw_modifier;
+int ch1,ch3, ch2,thrust1, thrust2, thrust3, thrust4, modifier_pitch, modifier_roll;
 
-int c1, c2;   
+int c1_pitch, c2_pitch, c1_roll, c2_roll;   
  
 Servo esc1, esc2, esc3, esc4;
 
@@ -21,7 +21,8 @@ void setup()
   delay(10000);
   
   pinMode(PIN_THROTTLE, INPUT);
-  pinMode(PIN_YAW, INPUT);
+  pinMode(PIN_PITCH, INPUT);
+  pinMode(PIN_ROLL, INPUT);
   
   Serial.begin(9600);
   
@@ -32,43 +33,73 @@ void loop()
 {
 
   ch1 = pulseIn(PIN_THROTTLE, HIGH, 25000);
-  ch4 = pulseIn(PIN_YAW, HIGH, 25000);
+  ch3 = pulseIn(PIN_PITCH, HIGH, 25000);
+  ch2 = pulseIn(PIN_ROLL, HIGH, 25000);
+  
   Serial.print("Input Value: ");
   Serial.print(ch1);
   Serial.print("Input Value2: ");
-  Serial.print(ch4  );
+  Serial.print(ch3);
+  Serial.print("Input Value2: ");
+  Serial.print(ch2);
+
   
   thrust1 = map(ch1, 1074, 1645, 1275, 2400);
   thrust2 = map(ch1, 1074, 1645, 1275, 2400);
   thrust3 = map(ch1, 1074, 1645, 1275, 2400);
   thrust4 = map(ch1, 1074, 1645, 1275, 2400);
   
-  ch4 = ch4 / 10;
-  if(ch4>=120 && ch4<=145)
+  ch3 = ch3 / 10;
+  ch2 = ch2 / 10;
+  
+  /*Pitch*/
+  if(ch3>=114 && ch3<=134)
   {
-    yaw_modifier=0;
-    c1 = MULTIPLIER_YAW;
-    c2 = MULTIPLIER_YAW;
+    modifier_pitch=0;
+    c1_pitch = MULTIPLIER_PITCH;
+    c2_pitch = MULTIPLIER_PITCH;
 
-  }
-  else if(ch4<=120)
+  }  
+  else if(ch3<=114)
   {
-    yaw_modifier = map(ch4, 95, 120, 90, 1);
-    c1 = MULTIPLIER_YAW;
-    c2 = -MULTIPLIER_YAW;
+    modifier_pitch = map(ch3, 96, 114, 45, 1);
+    c1_pitch = MULTIPLIER_PITCH;
+    c2_pitch = -MULTIPLIER_PITCH;
   }
-  else if(ch4>=145)
+  else if(ch3>=134)
   {
-    yaw_modifier = map(ch4, 145, 165, 1, 90);
-    c1 = -MULTIPLIER_YAW;
-    c2 = MULTIPLIER_YAW;
+    modifier_pitch = map(ch3, 134, 164, 1, 45);
+    c1_pitch = -MULTIPLIER_PITCH;
+    c2_pitch = MULTIPLIER_PITCH;
   }
+
+  /*Roll*/
+  if(ch2>=114 && ch2<=134)
+  {
+    modifier_roll=0;
+    c1_roll = MULTIPLIER_ROLL;
+    c2_roll = MULTIPLIER_ROLL;
+
+  }  
+  else if(ch2<=114)
+  {
+    modifier_roll = map(ch2, 96, 114, 45, 1);
+    c1_roll = MULTIPLIER_ROLL;
+    c2_roll = -MULTIPLIER_ROLL;
+  }
+  else if(ch2>=134)
+  {
+    modifier_roll = map(ch2, 134, 164, 1, 45);
+    c1_roll = -MULTIPLIER_ROLL;
+    c2_roll = MULTIPLIER_ROLL;
+  }
+
+  thrust1 = thrust1 + c1_pitch * modifier_pitch + c2_roll * modifier_roll;
+  thrust2 = thrust2 + c1_pitch * modifier_pitch + c1_roll * modifier_roll;
+  thrust3 = thrust3 + c2_pitch * modifier_pitch + c1_roll * modifier_roll;
+  thrust4 = thrust4 + c2_pitch * modifier_pitch + c2_roll * modifier_roll;
   
-  thrust1 = thrust1 + c1 * yaw_modifier;
-  thrust2 = thrust2 + c2 * yaw_modifier;
-  thrust3 = thrust3 + c1 * yaw_modifier;
-  thrust4 = thrust4 + c2 * yaw_modifier;
-  
+  //Minimum Throttle Constraints
   if(ch1<=THRESHOLD_CHANNEL_THROTTLE_MIN)
   {
     thrust1 = thrust2 = thrust3 = thrust4 = THRESHOLD_CHANNEL_THROTTLE_MIN;
@@ -87,6 +118,13 @@ void loop()
     if(thrust3 < THRESHOLD_MOTOR_HOVER) thrust3 = THRESHOLD_MOTOR_HOVER;
     if(thrust4 < THRESHOLD_MOTOR_HOVER) thrust4 = THRESHOLD_MOTOR_HOVER;
   }
+  
+  //Upper Limit Constraints -- Will apply to all cases
+  
+  thrust1 = (thrust1 > THRESHOLD_MOTOR_MAX) ? THRESHOLD_MOTOR_MAX : thrust1;
+  thrust2 = (thrust2 > THRESHOLD_MOTOR_MAX) ? THRESHOLD_MOTOR_MAX : thrust2;
+  thrust3 = (thrust3 > THRESHOLD_MOTOR_MAX) ? THRESHOLD_MOTOR_MAX : thrust3;
+  thrust4 = (thrust4 > THRESHOLD_MOTOR_MAX) ? THRESHOLD_MOTOR_MAX : thrust4;
   
   
   Serial.print(" Output Pulse:");
