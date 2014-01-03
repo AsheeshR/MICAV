@@ -18,7 +18,7 @@ void setup()
   digitalWrite(2, LOW);//GND for ESC4
   digitalWrite(12, LOW);//GND for ESC
   
-  delay(5000);
+  delay(10000);
   
   pinMode(5, INPUT);
   pinMode(6, INPUT);
@@ -49,7 +49,7 @@ void loop()
   
   if(disable==0)
   {
-    thrust = map(ch1, 1074, 1645, 140, 240);
+    thrust = map(ch1, 950, 1600, 140, 240);
     thrust=thrust*10;
   }
   
