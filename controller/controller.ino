@@ -1,4 +1,5 @@
 #include <Servo.h> 
+#include <smoothing.h>
 #include "driver.h"
 #include "constants.h"
 
