@@ -11,15 +11,15 @@ char b;
 void setup() 
 { 
   pinMode(12, OUTPUT);
-  esc1.attach(A0);  // attaches the servo on pin 9 to the servo object
-  esc2.attach(A1);  // attaches the servo on pin 9 to the servo object
-  esc3.attach(A2);  // attaches the servo on pin 9 to the servo object
+  //esc1.attach(A0);  // attaches the servo on pin 9 to the servo object
+  //esc2.attach(A1);  // attaches the servo on pin 9 to the servo object
+  //esc3.attach(A2);  // attaches the servo on pin 9 to the servo object
   esc4.attach(A3);  // attaches the servo on pin 9 to the servo object
   
   
-  esc1.writeMicroseconds(20);
-  esc2.writeMicroseconds(20);
-  esc3.writeMicroseconds(20);
+  //esc1.writeMicroseconds(20);
+  //esc2.writeMicroseconds(20);
+  //esc3.writeMicroseconds(20);
   esc4.writeMicroseconds(20);
 
   Serial.begin(9600);
@@ -38,9 +38,9 @@ void loop()
    
     while(Serial.available()==0)
     {
-       esc1.writeMicroseconds(t);  
-       esc2.writeMicroseconds(t);  
-       esc3.writeMicroseconds(t);  
+       //esc1.writeMicroseconds(t);  
+       //esc2.writeMicroseconds(t);  
+       //esc3.writeMicroseconds(t);  
        esc4.writeMicroseconds(t);  
        delayMicroseconds(100);
     }

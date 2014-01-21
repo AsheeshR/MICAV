@@ -119,6 +119,14 @@ void loop()
     if(thrust4 < THRESHOLD_MOTOR_HOVER) thrust4 = THRESHOLD_MOTOR_HOVER;
   }
   
+  //To counter CG imbalance
+  
+  thrust2 = (int) 1.10 * thrust2;
+  thrust3 = (int) 1.05 * thrust3;
+  
+  
+  
+  
   //Upper Limit Constraints -- Will apply to all cases
   
   thrust1 = (thrust1 > THRESHOLD_MOTOR_MAX) ? THRESHOLD_MOTOR_MAX : thrust1;
