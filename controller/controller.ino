@@ -5,6 +5,7 @@
 int ch1,ch4,thrust1, thrust2, thrust3, thrust4, yaw_modifier;
 
 int c1, c2;   
+
  
 Servo esc1, esc2, esc3, esc4;
 
