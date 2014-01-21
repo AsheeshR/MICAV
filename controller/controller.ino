@@ -113,10 +113,16 @@ void loop()
   }
   else if(ch1<=THRESHOLD_CHANNEL_THROTTLE_MAX)
   {
+
     if(thrust1 < THRESHOLD_MOTOR_HOVER) thrust1 = THRESHOLD_MOTOR_HOVER;
     if(thrust2 < THRESHOLD_MOTOR_HOVER) thrust2 = THRESHOLD_MOTOR_HOVER;
     if(thrust3 < THRESHOLD_MOTOR_HOVER) thrust3 = THRESHOLD_MOTOR_HOVER;
     if(thrust4 < THRESHOLD_MOTOR_HOVER) thrust4 = THRESHOLD_MOTOR_HOVER;
+ 
+    /*Previous commit
+    thrust = map(ch1, 950, 1600, 140, 240);
+    thrust=thrust*10;
+    */
   }
   
   //To counter CG imbalance
