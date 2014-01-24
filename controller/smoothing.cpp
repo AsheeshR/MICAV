@@ -33,6 +33,15 @@ int cumulative_mov_avg(int current_value)
   cumulative_average=(current_value+k*cumulative_average)/(k+1);
   return cumulative_average;
 }
-    
+
+int exponential_mov_avg(int current_value)
+
+{ float alpha=0.8;
+  static int exponential_average=current_value;
+  
+  exponential_average=alpha*current_value + (1-alpha)*exponential_average;
+  return exponential_average; 
+  
+}
   
 
