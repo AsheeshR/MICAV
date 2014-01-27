@@ -1,6 +1,8 @@
 #ifndef CONSTANTS
 #define CONSTANTS
 
+//TBT -- To be tuned
+
 //Pin Configuration
 
 #define PIN_M1 A0
@@ -13,9 +15,18 @@
 #define PIN_PITCH  9
 #define PIN_YAW  10
 
-//ON HOLD #define PIN_TOGGLEM 2 //This should be connected to an interrupt handler
+//TBT
+#define MULTIPLIER_PITCH 2
+#define MULTIPLIER_ROLL 2
 
-//Ranges
+//Input Based Limits
+#define THRESHOLD_CHANNEL_THROTTLE_MIN 1050
+#define THRESHOLD_CHANNEL_THROTTLE_HOVER 1200 //TBT
+#define THRESHOLD_CHANNEL_THROTTLE_MAX 1645
 
+//Output Limits
+#define THRESHOLD_MOTOR_MIN 1300
+#define THRESHOLD_MOTOR_HOVER 1400 //TBT
+#define THRESHOLD_MOTOR_MAX 2400
 
 #endif
