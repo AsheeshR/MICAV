@@ -85,5 +85,5 @@ void loop()
   esc3.write(thrust3);
   esc4.write(thrust4);
   
-  delay(50); 
+  delayMicroseconds(500); 
 }
