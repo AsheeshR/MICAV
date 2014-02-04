@@ -6,6 +6,9 @@
 #define SG_LENGTH 5
 #define RDP_LENGTH 5
 #define epsilon 30
+#define KZ_LENGTH 5
+#define KZ_MAX 3
+#define KZ_history_LENGTH KZ_LENGTH*KZ_MAX
 
 
 int history_SMA[SMA_LENGTH] = {0,};
@@ -127,9 +130,37 @@ void RDP(int start_index, int end_index)
   return update_value;
 }
 
+int history_KZ[KZ_history_LENGTH] = {0,};
+const int coefficients_k2[]={1,2,3,4,5,4,3,2,1};
+const int coefficients_k3[]={1,3,6,10,15,18,19,18,15,10,6,3,1};
+int KZ_filter(int current_value)
+
+{ 
+  int updated_value=0; 
+  for(int i=1;i<KZ_history_LENGTH;i++)
+  {
+         history_KZ[i-1]=history_KZ[i];
+  }
+    history_KZ[KZ_history_LENGTH-1]=current_value;
+    
+   for(int i=-KZ_LENGTH+1;i<KZ_LENGTH+1;i++)
+   {
+     updated_value+=history_KZ[i+KZ_history_LENGTH]*coefficients_k2[i+KZ_history_LENGTH];
+   } 
+   updated_value/=KZ_LENGTH*KZ_LENGTH;
+   history_KZ[KZ_history_LENGTH/2]=updated_value;
+   
+   updated_value=0;
+
+   for(int i=-(3*KZ_LENGTH-1)/2;i<3*(KZ_LENGTH+1)/2;i++)
+   {
+     updated_value+=history_KZ[i+KZ_history_LENGTH]*coefficients_k3[i+KZ_history_LENGTH];
+   } 
+   updated_value/=KZ_LENGTH*KZ_LENGTH*KZ_LENGTH;
+   return history_KZ[KZ_history_LENGTH/2]=updated_value;
 
     
-  
+}
   
 
 
