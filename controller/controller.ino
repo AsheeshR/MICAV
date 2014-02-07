@@ -1,9 +1,9 @@
 #include <Servo.h> 
-#include <smoothing.h>
+#include "smoothing.h"
 #include "driver.h"
 #include "constants.h"
 
-int ch1,ch3, ch2,thrust1, thrust2, thrust3, thrust4, modifier_pitch, modifier_roll;
+int ch1,ch3, ch2, thrust, modifier_pitch, modifier_roll;
 
 int c1_pitch, c2_pitch, c1_roll, c2_roll;   
  
@@ -32,63 +32,31 @@ void setup()
 
 void loop()
 {
-  Serial.print(micros());
+  Serial.print(millis());
+  ch1 = pulseIn(PIN_THROTTLE, HIGH, 25000);
   Serial.print(",");
-  //ch1 = pulseIn(PIN_THROTTLE, HIGH, 25000);
-  if(Serial.available()>0)
-  ch1=Serial.parseInt();
-  ch3 = pulseIn(PIN_PITCH, HIGH, 25000);
-  ch2 = pulseIn(PIN_ROLL, HIGH, 25000);
-  
-
   Serial.print(ch1);
   Serial.print(",");
-  Serial.println(micros());
-
-  //Serial.print("Input Value2: ");
-  //Serial.print(ch3);
-  //Serial.print("Input Value2: ");
-  //Serial.print(ch2);
-
+  ch1 = simple_mov_avg(ch1);
+  Serial.print(millis());
+  Serial.print(",");
+  Serial.println(ch1);
   
-    
-  /*Pitch*/
+ // ch3 = pulseIn(PIN_PITCH, HIGH, 25000);
+ // ch2 = pulseIn(PIN_ROLL, HIGH, 25000);
   
-  //Minimum Throttle Constraints
-  if(ch1<=THRESHOLD_CHANNEL_THROTTLE_MIN)
-  {
-    thrust1 = thrust2 = thrust3 = thrust4 = THRESHOLD_CHANNEL_THROTTLE_MIN;
-  }
-  else if(ch1<=THRESHOLD_CHANNEL_THROTTLE_HOVER)
-  {
-    if(thrust1 > THRESHOLD_MOTOR_HOVER) thrust1 = THRESHOLD_MOTOR_HOVER;
-    if(thrust2 > THRESHOLD_MOTOR_HOVER) thrust2 = THRESHOLD_MOTOR_HOVER;
-    if(thrust3 > THRESHOLD_MOTOR_HOVER) thrust3 = THRESHOLD_MOTOR_HOVER;
-    if(thrust4 > THRESHOLD_MOTOR_HOVER) thrust4 = THRESHOLD_MOTOR_HOVER; 
-  }
-  else if(ch1<=THRESHOLD_CHANNEL_THROTTLE_MAX)
-  {
-    if(thrust1 < THRESHOLD_MOTOR_HOVER) thrust1 = THRESHOLD_MOTOR_HOVER;
-    if(thrust2 < THRESHOLD_MOTOR_HOVER) thrust2 = THRESHOLD_MOTOR_HOVER;
-    if(thrust3 < THRESHOLD_MOTOR_HOVER) thrust3 = THRESHOLD_MOTOR_HOVER;
-    if(thrust4 < THRESHOLD_MOTOR_HOVER) thrust4 = THRESHOLD_MOTOR_HOVER;
-  }
+  //Serial.print("Input Value: ");
+  //Serial.print(ch1);
+//  Serial.print("Input Value2: ");
+//  Serial.print(ch3);
+//  Serial.print("Input Value2: ");
+//  Serial.print(ch2); 
   
   
-  
-  //Upper Limit Constraints -- Will apply to all cases
-  
-  thrust1 = (thrust1 > THRESHOLD_MOTOR_MAX) ? THRESHOLD_MOTOR_MAX : thrust1;
-  thrust2 = (thrust2 > THRESHOLD_MOTOR_MAX) ? THRESHOLD_MOTOR_MAX : thrust2;
-  thrust3 = (thrust3 > THRESHOLD_MOTOR_MAX) ? THRESHOLD_MOTOR_MAX : thrust3;
-  thrust4 = (thrust4 > THRESHOLD_MOTOR_MAX) ? THRESHOLD_MOTOR_MAX : thrust4;
-  
- 
-  
-  esc1.write(thrust1);
-  esc2.write(thrust2);
-  esc3.write(thrust3);
-  esc4.write(thrust4);
+  esc1.write(thrust);
+//  esc2.write(thrust);
+//  esc3.write(thrust);
+//  esc4.write(thrust);
   
   delayMicroseconds(500); 
 }
