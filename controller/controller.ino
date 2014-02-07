@@ -32,14 +32,19 @@ void setup()
 
 void loop()
 {
-
-  ch1 = pulseIn(PIN_THROTTLE, HIGH, 25000);
+  Serial.print(micros());
+  Serial.print(",");
+  //ch1 = pulseIn(PIN_THROTTLE, HIGH, 25000);
+  if(Serial.available()>0)
+  ch1=Serial.parseInt();
   ch3 = pulseIn(PIN_PITCH, HIGH, 25000);
   ch2 = pulseIn(PIN_ROLL, HIGH, 25000);
   
-  Serial.print(millis());
+
+  Serial.print(ch1);
   Serial.print(",");
-  Serial.println(ch1);
+  Serial.println(micros());
+
   //Serial.print("Input Value2: ");
   //Serial.print(ch3);
   //Serial.print("Input Value2: ");
