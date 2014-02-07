@@ -1,9 +1,10 @@
 #include <Servo.h> 
-#include <smoothing.h>
+#include "smoothing.h"
+#include "smoothing.cpp"
 #include "driver.h"
 #include "constants.h"
 
-int ch1,ch3, ch2,thrust1, thrust2, thrust3, thrust4, modifier_pitch, modifier_roll;
+int ch1,ch3, ch2, thrust, modifier_pitch, modifier_roll;
 
 int c1_pitch, c2_pitch, c1_roll, c2_roll;   
  
@@ -32,120 +33,31 @@ void setup()
 
 void loop()
 {
-
+  Serial.print(millis());
   ch1 = pulseIn(PIN_THROTTLE, HIGH, 25000);
-  ch3 = pulseIn(PIN_PITCH, HIGH, 25000);
-  ch2 = pulseIn(PIN_ROLL, HIGH, 25000);
-  
-  Serial.print("Input Value: ");
+  Serial.print(",");
   Serial.print(ch1);
-  Serial.print("Input Value2: ");
-  Serial.print(ch3);
-  Serial.print("Input Value2: ");
-  Serial.print(ch2);
-
+  Serial.print(",");
+  ch1 = simple_mov_avg(ch1);
+  Serial.print(millis());
+  Serial.print(",");
+  Serial.println(ch1);
   
-  thrust1 = map(ch1, 1074, 1645, 1275, 2400);
-  thrust2 = map(ch1, 1074, 1645, 1275, 2400);
-  thrust3 = map(ch1, 1074, 1645, 1275, 2400);
-  thrust4 = map(ch1, 1074, 1645, 1275, 2400);
+ // ch3 = pulseIn(PIN_PITCH, HIGH, 25000);
+ // ch2 = pulseIn(PIN_ROLL, HIGH, 25000);
   
-  ch3 = ch3 / 10;
-  ch2 = ch2 / 10;
-  
-  /*Pitch*/
-  if(ch3>=114 && ch3<=134)
-  {
-    modifier_pitch=0;
-    c1_pitch = MULTIPLIER_PITCH;
-    c2_pitch = MULTIPLIER_PITCH;
-
-  }  
-  else if(ch3<=114)
-  {
-    modifier_pitch = map(ch3, 96, 114, 45, 1);
-    c1_pitch = MULTIPLIER_PITCH;
-    c2_pitch = -MULTIPLIER_PITCH;
-  }
-  else if(ch3>=134)
-  {
-    modifier_pitch = map(ch3, 134, 164, 1, 45);
-    c1_pitch = -MULTIPLIER_PITCH;
-    c2_pitch = MULTIPLIER_PITCH;
-  }
-
-  /*Roll*/
-  if(ch2>=114 && ch2<=134)
-  {
-    modifier_roll=0;
-    c1_roll = MULTIPLIER_ROLL;
-    c2_roll = MULTIPLIER_ROLL;
-
-  }  
-  else if(ch2<=114)
-  {
-    modifier_roll = map(ch2, 96, 114, 45, 1);
-    c1_roll = MULTIPLIER_ROLL;
-    c2_roll = -MULTIPLIER_ROLL;
-  }
-  else if(ch2>=134)
-  {
-    modifier_roll = map(ch2, 134, 164, 1, 45);
-    c1_roll = -MULTIPLIER_ROLL;
-    c2_roll = MULTIPLIER_ROLL;
-  }
-
-  thrust1 = thrust1 + c1_pitch * modifier_pitch + c2_roll * modifier_roll;
-  thrust2 = thrust2 + c1_pitch * modifier_pitch + c1_roll * modifier_roll;
-  thrust3 = thrust3 + c2_pitch * modifier_pitch + c1_roll * modifier_roll;
-  thrust4 = thrust4 + c2_pitch * modifier_pitch + c2_roll * modifier_roll;
-  
-  //Minimum Throttle Constraints
-  if(ch1<=THRESHOLD_CHANNEL_THROTTLE_MIN)
-  {
-    thrust1 = thrust2 = thrust3 = thrust4 = THRESHOLD_CHANNEL_THROTTLE_MIN;
-  }
-  else if(ch1<=THRESHOLD_CHANNEL_THROTTLE_HOVER)
-  {
-    if(thrust1 > THRESHOLD_MOTOR_HOVER) thrust1 = THRESHOLD_MOTOR_HOVER;
-    if(thrust2 > THRESHOLD_MOTOR_HOVER) thrust2 = THRESHOLD_MOTOR_HOVER;
-    if(thrust3 > THRESHOLD_MOTOR_HOVER) thrust3 = THRESHOLD_MOTOR_HOVER;
-    if(thrust4 > THRESHOLD_MOTOR_HOVER) thrust4 = THRESHOLD_MOTOR_HOVER; 
-  }
-  else if(ch1<=THRESHOLD_CHANNEL_THROTTLE_MAX)
-  {
-    if(thrust1 < THRESHOLD_MOTOR_HOVER) thrust1 = THRESHOLD_MOTOR_HOVER;
-    if(thrust2 < THRESHOLD_MOTOR_HOVER) thrust2 = THRESHOLD_MOTOR_HOVER;
-    if(thrust3 < THRESHOLD_MOTOR_HOVER) thrust3 = THRESHOLD_MOTOR_HOVER;
-    if(thrust4 < THRESHOLD_MOTOR_HOVER) thrust4 = THRESHOLD_MOTOR_HOVER;
-  }
-  
-  //To counter CG imbalance
-  
-  thrust2 = (int) 1.10 * thrust2;
-  thrust3 = (int) 1.05 * thrust3;
+  //Serial.print("Input Value: ");
+  //Serial.print(ch1);
+//  Serial.print("Input Value2: ");
+//  Serial.print(ch3);
+//  Serial.print("Input Value2: ");
+//  Serial.print(ch2); 
   
   
+  esc1.write(thrust);
+//  esc2.write(thrust);
+//  esc3.write(thrust);
+//  esc4.write(thrust);
   
-  
-  //Upper Limit Constraints -- Will apply to all cases
-  
-  thrust1 = (thrust1 > THRESHOLD_MOTOR_MAX) ? THRESHOLD_MOTOR_MAX : thrust1;
-  thrust2 = (thrust2 > THRESHOLD_MOTOR_MAX) ? THRESHOLD_MOTOR_MAX : thrust2;
-  thrust3 = (thrust3 > THRESHOLD_MOTOR_MAX) ? THRESHOLD_MOTOR_MAX : thrust3;
-  thrust4 = (thrust4 > THRESHOLD_MOTOR_MAX) ? THRESHOLD_MOTOR_MAX : thrust4;
-  
-  
-  Serial.print(" Output Pulse:");
-  Serial.print(thrust1);
-  Serial.print(thrust2);
-  Serial.print(thrust3);
-  Serial.println(thrust4);
-  
-  esc1.write(thrust1);
-  esc2.write(thrust2);
-  esc3.write(thrust3);
-  esc4.write(thrust4);
-  
-  delay(100); 
+  delayMicroseconds(500); 
 }

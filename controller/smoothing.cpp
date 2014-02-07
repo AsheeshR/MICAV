@@ -1,6 +1,8 @@
 //This file will contain implementations of the smoothing algorithms
+#ifndef SMOOTH2
+#define SMOOTH2
 
-#include <smoothing.h>
+#include "smoothing.h"
 #include <math.h>
 #define SMA_LENGTH 5
 #define SG_LENGTH 5
@@ -9,7 +11,6 @@
 #define KZ_LENGTH 5
 #define KZ_MAX 3
 #define KZ_history_LENGTH KZ_LENGTH*KZ_MAX
-
 
 int history_SMA[SMA_LENGTH] = {0,};
 
@@ -32,7 +33,7 @@ int simple_mov_avg(int current_value)
   return average;
 }
 
-int cumulative_mov_avg(int current_value)
+/*int cumulative_mov_avg(int current_value)
 
 { static int cumulative_average=0;
   static int k=0;
@@ -160,7 +161,6 @@ int KZ_filter(int current_value)
    return history_KZ[KZ_history_LENGTH/2]=updated_value;
 
     
-}
-  
+}*/
 
-
+#endif
