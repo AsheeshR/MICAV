@@ -4,15 +4,8 @@
 
 #include "smoothing.h"
 #include <math.h>
-#define SMA_LENGTH 5
-#define SG_LENGTH 5
-#define RDP_LENGTH 5
-#define epsilon 30
-#define KZ_LENGTH 5
-#define KZ_MAX 3
-#define KZ_history_LENGTH KZ_LENGTH*KZ_MAX
 
-int history_SMA[SMA_LENGTH] = {0,};
+extern int history_SMA[SMA_LENGTH] = {0,};
 
 int simple_mov_avg(int current_value)
 {  
@@ -33,10 +26,10 @@ int simple_mov_avg(int current_value)
   return average;
 }
 
-/*int cumulative_mov_avg(int current_value)
-
-{ static int cumulative_average=0;
-  static int k=0;
+int cumulative_mov_avg(int current_value)  //Expected flight time = 36 minutes before overflow
+{ 
+  static unsigned int cumulative_average=0;
+  static unsigned int k=0;
   k++;
   
   cumulative_average=(current_value+k*cumulative_average)/(k+1);
@@ -44,8 +37,8 @@ int simple_mov_avg(int current_value)
 }
 
 int exponential_mov_avg(int current_value)
-
-{ float alpha=0.8;
+{ 
+  float alpha=0.8;
   static int exponential_average=current_value;
   
   exponential_average=alpha*current_value + (1-alpha)*exponential_average;
@@ -53,7 +46,7 @@ int exponential_mov_avg(int current_value)
   
 }
 
-int history_SG[SG_LENGTH] = {0,};
+/*int history_SG[SG_LENGTH] = {0,};
 const int coefficients[]={-3,12,17,12,-3};
 const int normalization_value=35;
 

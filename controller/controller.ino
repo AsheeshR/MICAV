@@ -1,6 +1,5 @@
 #include <Servo.h> 
 #include "smoothing.h"
-#include "smoothing.cpp"
 #include "driver.h"
 #include "constants.h"
 
@@ -20,7 +19,7 @@ void setup()
 //  digitalWrite(2, LOW);//GND for ESC4
  // digitalWrite(12, LOW);//GND for ESC
   
-  delay(10000);
+  //delay(10000);
   
   pinMode(PIN_THROTTLE, INPUT);
   pinMode(PIN_PITCH, INPUT);
@@ -38,7 +37,7 @@ void loop()
   Serial.print(",");
   Serial.print(ch1);
   Serial.print(",");
-  ch1 = simple_mov_avg(ch1);
+  ch1 = cumulative_mov_avg(ch1);
   Serial.print(millis());
   Serial.print(",");
   Serial.println(ch1);
