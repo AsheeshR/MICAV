@@ -24,23 +24,32 @@ void setup()
   pinMode(PIN_THROTTLE, INPUT);
   pinMode(PIN_PITCH, INPUT);
   pinMode(PIN_ROLL, INPUT);
-  
   Serial.begin(9600);
   
 }
 
-
+unsigned long t1,t2;
+int ch1_smooth;
 void loop()
 {
-  Serial.print(millis());
-  ch1 = pulseIn(PIN_THROTTLE, HIGH, 25000);
-  Serial.print(",");
+  ch1 = pulseIn(PIN_THROTTLE, HIGH, 20000);    //Experimentally obtained value for minimum time out
+  t1=micros();
+  //Serial.print(millis());
+  //Serial.print(",");
+  //Serial.print(ch1);
+  ch1_smooth = KZ_filter(ch1);
+  t2=micros();
+  Serial.print(t1);
+  Serial.print(",");  
   Serial.print(ch1);
   Serial.print(",");
-  ch1 = exponential_mov_avg(ch1);
-  Serial.print(millis());
+  Serial.print(t2);
   Serial.print(",");
-  Serial.println(ch1);
+  Serial.println(ch1_smooth);
+  //Serial.print(millis());
+  //Serial.print(",");
+  
+  //Serial.println(ch1);
   
  // ch3 = pulseIn(PIN_PITCH, HIGH, 25000);
  // ch2 = pulseIn(PIN_ROLL, HIGH, 25000);
@@ -51,7 +60,7 @@ void loop()
 //  Serial.print(ch3);
 //  Serial.print("Input Value2: ");
 //  Serial.print(ch2); 
-  
+   
   
   esc1.write(thrust);
 //  esc2.write(thrust);
