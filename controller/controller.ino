@@ -37,7 +37,7 @@ void loop()
   Serial.print(",");
   Serial.print(ch1);
   Serial.print(",");
-  ch1 = cumulative_mov_avg(ch1);
+  ch1 = exponential_mov_avg(ch1);
   Serial.print(millis());
   Serial.print(",");
   Serial.println(ch1);

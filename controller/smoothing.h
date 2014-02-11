@@ -15,6 +15,7 @@ extern int history_SMA[SMA_LENGTH];
 
 int simple_mov_avg(int current_value);
 int cumulative_mov_avg(int current_value);
+int exponential_mov_avg(int current_value);
 
 
 #endif

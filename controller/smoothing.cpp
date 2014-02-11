@@ -26,10 +26,10 @@ int simple_mov_avg(int current_value)
   return average;
 }
 
-int cumulative_mov_avg(int current_value)  //Expected flight time = 36 minutes before overflow
+int cumulative_mov_avg(int current_value)  //Seems useless
 { 
-  static unsigned int cumulative_average=0;
-  static unsigned int k=0;
+  static unsigned long cumulative_average=0;
+  static unsigned long k=0;
   k++;
   
   cumulative_average=(current_value+k*cumulative_average)/(k+1);
@@ -38,7 +38,7 @@ int cumulative_mov_avg(int current_value)  //Expected flight time = 36 minutes b
 
 int exponential_mov_avg(int current_value)
 { 
-  float alpha=0.8;
+  float alpha=0.20;
   static int exponential_average=current_value;
   
   exponential_average=alpha*current_value + (1-alpha)*exponential_average;
