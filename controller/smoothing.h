@@ -4,12 +4,12 @@
 
 #define SMA_LENGTH 43
 #define EMA_ALPHA 0.10
-#define SG_LENGTH 5
+#define SG_LENGTH 11
 #define RDP_LENGTH 11
 #define epsilon 50
 #define KZ_LENGTH 5
 #define KZ_MAX 4
-#define KZ_history_LENGTH KZ_LENGTH*KZ_MAX
+#define KZ_history_LENGTH ((KZ_LENGTH-1)*KZ_MAX)
 
 
 extern int history_SMA[SMA_LENGTH];

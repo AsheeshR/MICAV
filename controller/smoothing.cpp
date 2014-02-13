@@ -46,12 +46,13 @@ int exponential_mov_avg(int current_value)
 }
 
 int history_SG[SG_LENGTH] = {0,};
-const long coefficients[]={-3,12,17,12,-3};
-const int normalization_value=35;
+const long long coefficients[]={1512,-3780,-840,5040,10080,12012,10080,5040,-840,-3780,1512};
+const long long normalization_value=36036;
+
 
 int savitzky_golay(int current_value)
 { 
-  long sum=0;
+  long long sum=0;
   int SG_MID = SG_LENGTH/2;
   for(int i=1;i<SG_LENGTH;i++)
   {
@@ -124,56 +125,42 @@ void RDP(int start_index, int end_index)
 }
 
 int history_KZ[KZ_history_LENGTH] = {0,};
-int KZ_MID=KZ_history_LENGTH/2;
-const long coefficients_k2[]={1,2,3,4,5,4,3,2,1};
-const long coefficients_k3[]={1,3,6,10,15,18,19,18,15,10,6,3,1};
-const long coefficients_k4[]={1,4,10,20,35,52,68,80,85,80,68,52,35,20,10,4,1};
+int KZ_MID=(KZ_history_LENGTH)/2;
+const long coefficients_k[][17]={{0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0},
+                                 {0,0,0,0,1,2,3,4,5,4,3,2,1,0,0,0,0},
+                                 {0,0,1,3,6,10,15,18,19,18,15,10,6,3,1,0,0},
+                                 {1,4,10,20,35,52,68,80,85,80,68,52,35,20,10,4,1}};
+//const long coefficients_k3[]={1,3,6,10,15,18,19,18,15,10,6,3,1};
+//const long coefficients_k4[]={1,4,10,20,35,52,68,80,85,80,68,52,35,20,10,4,1};
 
 int KZ_filter(int current_value)
-
 { 
+  long divisor=1;
   long updated_value=0; 
   for(int i=1;i<KZ_history_LENGTH;i++)
   {
          history_KZ[i-1]=history_KZ[i];
   }
-    history_KZ[KZ_history_LENGTH-1]=current_value;
+  
+  history_KZ[KZ_history_LENGTH-1]=current_value;
     
-    for(int i=-KZ_LENGTH/2;i<=KZ_LENGTH/2;i++)
-   {
-     updated_value+=history_KZ[i+KZ_MID];
-   } 
-   updated_value/=KZ_LENGTH;
-   history_KZ[KZ_MID]=updated_value;
+  for(int k=1;k<=3;k++)
+  {  
+    
+    for(int i=-k*(KZ_LENGTH-1)/2;i<=k*(KZ_LENGTH-1)/2;i++)
+    {
+      updated_value+=history_KZ[i+KZ_MID]*coefficients_k[k-1][i+KZ_MID];
+    } 
+    divisor*=KZ_LENGTH;
+    updated_value/=divisor;
+    history_KZ[KZ_MID]=updated_value;
    
-   updated_value=0;
+    updated_value=0;
 
-   for(int i=-KZ_LENGTH+1;i<KZ_LENGTH;i++)
-   {
-     updated_value+=history_KZ[i+KZ_MID]*coefficients_k2[i+4];
-   } 
-   updated_value/=KZ_LENGTH*KZ_LENGTH;
-   history_KZ[KZ_MID]=updated_value;
+  } 
    
-   updated_value=0;
-
-   for(int i=-(3*KZ_LENGTH-1)/2;i<=3*(KZ_LENGTH)/2;i++)
-   {
-     updated_value+=history_KZ[i+KZ_MID]*coefficients_k3[i+6];
-   } 
-   updated_value/=KZ_LENGTH*KZ_LENGTH*KZ_LENGTH;
-   history_KZ[KZ_MID]=updated_value;
+  return history_KZ[KZ_MID];
    
-   updated_value=0;
-   
-   
-   for(int i=-(4*KZ_LENGTH-1)/2;i<=4*(KZ_LENGTH)/2;i++)
-   {
-     updated_value+=history_KZ[i+KZ_MID]*coefficients_k4[i+8];
-   } 
-   updated_value/=KZ_LENGTH*KZ_LENGTH*KZ_LENGTH*KZ_LENGTH;
-   return history_KZ[KZ_MID]=updated_value;
-
     
 }
 
