@@ -27,15 +27,15 @@ void setup() {
 
 void loop() {
 
-  /*ch1 = pulseIn(5, HIGH, 25000); // Read the pulse width of 
-  ch2 = pulseIn(6, HIGH, 25000); // each channel
-  ch3 = pulseIn(9, HIGH, 25000);
-  ch4 = pulseIn(10, HIGH, 25000);
-  ch5 = pulseIn(3, HIGH, 25000); 
-  ch6 = pulseIn(2, HIGH, 25000);*/
-  ch7 = pulseIn(3, HIGH);
+  ch1 = pulseIn(3, HIGH, 25000); // Read the pulse width of 
+  ch2 = pulseIn(5, HIGH, 25000); // each channel
+  ch3 = pulseIn(6, HIGH, 25000);
+  ch4 = pulseIn(9, HIGH, 25000);
+//  ch5 = pulseIn(3, HIGH, 25000); 
+ // ch6 = pulseIn(2, HIGH, 25000);*/
+  //ch7 = pulseIn(3, HIGH);
 //  ch7 = ch7s.read();
-/*  Serial.print("Channel 1:"); // Print the value of 
+  Serial.print("Channel 1:"); // Print the value of */
   Serial.print(ch1);        // each channel
 
   Serial.print(" Channel 2:");
@@ -45,17 +45,17 @@ void loop() {
   Serial.print(ch3);
   
   Serial.print(" Channel 4:");
-  Serial.print(ch4);
+  Serial.println(ch4);
 
-  Serial.print(" Channel 5:");
+/*  Serial.print(" Channel 5:");
   Serial.println(ch5);
 
   Serial.print("Channel 6:"); // Print the value of 
   Serial.print(ch6);        // each channel
-*/
+
   Serial.print("Channel 7:"); // Print the value of 
   Serial.println(ch7);        // each channel
-
+*/
   //delay(10); // I put this here just to make the terminal 
               // window happier
 }
