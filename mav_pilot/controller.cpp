@@ -4,6 +4,7 @@ static int16_t X_dot[12] = {0, };
 static int16_t X[12] = {0, };
 
 /* A and B are too big to be allocated statically */
+/* Most likely solution is predefined macros */
 
 static int16_t U[4][0] = {0, };
 static int8_t C[4][12] = { 
@@ -19,11 +20,18 @@ void update_input()
 {
     update_channels(uint16_t channels[]);
     
-    U[0] = X[9] - map(channel[1],);
+    /* Calculate Errors */
+    U[0] = X[9] - map(channel[1],); 
     U[1] = X[10] - map(channel[2],);
     U[2] = X[11] - map(channel[3],);
     
     U[4] = X[5] - map(channel[0],);
+
+    /* Apply PID to errors */
+    U[0] = pid_dyaw(U[0]);
+    U[1] = pid_dpitch(U[1]);
+    U[2] = pid_droll(U[2]);
+    U[3] = pid_daltitude(U[3]);
     
 }
 
