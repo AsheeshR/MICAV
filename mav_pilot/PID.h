@@ -1,5 +1,7 @@
 /* This file defines the PID controllers for each state update */
 
+#include <stdint.h>
+
 #define KP_DYAW 0
 #define KI_DYAW 0
 #define KD_DYAW 0

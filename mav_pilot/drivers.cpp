@@ -10,10 +10,10 @@ void arm_motors()
 {
     //Servo *esc = malloc(sizeof(Servo)*4);
     
-    esc[0].attach(PIN_MOTOR1);    esc[0].writeMicroseconds(750);
-    esc[1].attach(PIN_MOTOR2);    esc[1].writeMicroseconds(750);
-    esc[2].attach(PIN_MOTOR3);    esc[2].writeMicroseconds(750);
-    esc[3].attach(PIN_MOTOR4);    esc[3].writeMicroseconds(750);
+    esc[0].attach(PIN_MOTOR0);    esc[0].writeMicroseconds(750);
+    esc[1].attach(PIN_MOTOR1);    esc[1].writeMicroseconds(750);
+    esc[2].attach(PIN_MOTOR2);    esc[2].writeMicroseconds(750);
+    esc[3].attach(PIN_MOTOR3);    esc[3].writeMicroseconds(750);
  
     delay(10000);
     
@@ -23,10 +23,10 @@ void arm_motors()
 void update_motors(/*Servo * esc[],*/ uint16_t thrust[])
 {
     /* Upper limit constraints */
-    thrust[0] = (thrust[0] > THRESHOLD_MOTOR_MAX) ? THRESHOLD_MOTOR_MAX : thrust[0];
-    thrust[1] = (thrust[1] > THRESHOLD_MOTOR_MAX) ? THRESHOLD_MOTOR_MAX : thrust[1];
-    thrust[2] = (thrust[2] > THRESHOLD_MOTOR_MAX) ? THRESHOLD_MOTOR_MAX : thrust[2];
-    thrust[3] = (thrust[3] > THRESHOLD_MOTOR_MAX) ? THRESHOLD_MOTOR_MAX : thrust[3];
+    thrust[0] = (thrust[0] > THRESHOLD_MOTOR0_MAX) ? THRESHOLD_MOTOR0_MAX : thrust[0];
+    thrust[1] = (thrust[1] > THRESHOLD_MOTOR1_MAX) ? THRESHOLD_MOTOR1_MAX : thrust[1];
+    thrust[2] = (thrust[2] > THRESHOLD_MOTOR2_MAX) ? THRESHOLD_MOTOR2_MAX : thrust[2];
+    thrust[3] = (thrust[3] > THRESHOLD_MOTOR3_MAX) ? THRESHOLD_MOTOR3_MAX : thrust[3];
 
     esc[0].write(thrust[0]);
     esc[1].write(thrust[1]);
@@ -38,10 +38,10 @@ void update_motors(/*Servo * esc[],*/ uint16_t thrust[])
 
 void cutoff_motors()
 {
-    esc[0].attach(PIN_MOTOR1);    esc[0].writeMicroseconds(750);
-    esc[1].attach(PIN_MOTOR2);    esc[1].writeMicroseconds(750);
-    esc[2].attach(PIN_MOTOR3);    esc[2].writeMicroseconds(750);
-    esc[3].attach(PIN_MOTOR4);    esc[3].writeMicroseconds(750);
+    esc[0].attach(PIN_MOTOR0);    esc[0].writeMicroseconds(750);
+    esc[1].attach(PIN_MOTOR1);    esc[1].writeMicroseconds(750);
+    esc[2].attach(PIN_MOTOR2);    esc[2].writeMicroseconds(750);
+    esc[3].attach(PIN_MOTOR3);    esc[3].writeMicroseconds(750);
 }
 
 
@@ -55,7 +55,7 @@ void setup_channels()
     
     pinMode(PIN_AUX1, INPUT);
     pinMode(PIN_AUX2, INPUT);
-    pinMode(PIN_AUTO, INPUT);
+//    pinMode(PIN_AUTO, INPUT);
 
 
 }
@@ -72,7 +72,7 @@ void update_channels(uint16_t channels[])
     
     channels[4] = pulseIn(PIN_AUX1, HIGH, 25000);
     channels[5] = pulseIn(PIN_AUX2, HIGH, 25000);
-    channels[6] = pulseIn(PIN_AUTO, HIGH, 25000);
+//    channels[6] = pulseIn(PIN_AUTO, HIGH, 25000);
 
 }
 

@@ -1,7 +1,11 @@
 /* This file defines the control system */
 /* Dependencies - Serial */
 
-#include "constants.h"
+
+#include "config.h"
+#include "drivers.h"
+#include "PID.h"
+#include <stdint.h>
 
 void update_input();
 void update_state();

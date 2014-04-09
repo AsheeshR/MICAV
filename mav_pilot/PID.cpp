@@ -1,5 +1,7 @@
 /* This file implements the PID controllers for each state update */
 
+#include "PID.h"
+
 int16_t pid_dyaw(int16_t dyaw)
 {
     static uint16_t dyaw_old = 0;
