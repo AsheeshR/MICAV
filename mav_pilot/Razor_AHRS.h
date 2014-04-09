@@ -126,6 +126,9 @@ const float magn_ellipsoid_transform[3][3] = {{0.902, -0.00354, 0.000636}, {-0.0
 #define GYRO_AVERAGE_OFFSET_Z ((float) -18.36)
 */
 
+#define CALIBRATION__MAGN_USE_EXTENDED true
+const float magn_ellipsoid_center[3] = {3.45931e+27, 3.95479e+28, 1.83475e+28};
+const float magn_ellipsoid_transform[3][3] = {{NaN, NaN, NaN}, {NaN, NaN, NaN}, {NaN, NaN, NaN}};
 
 // DEBUG OPTIONS
 /*****************************************************************/
@@ -238,4 +241,4 @@ void output_sensors();
 
 
 void imu_setup();
-float * imu_loop();
+void imu_loop(float ypr[]);

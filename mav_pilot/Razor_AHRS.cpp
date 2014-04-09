@@ -199,7 +199,7 @@ void imu_setup()
 float ypr[3];
 
 // Main loop
-float * imu_loop()
+void imu_loop(float ypr[])
 {
   // Read incoming control messages
   /*if (Serial.available() >= 2)
@@ -330,7 +330,7 @@ float * imu_loop()
     ypr[0]=TO_DEG(yaw);
     ypr[1]=TO_DEG(pitch);
     ypr[2]=TO_DEG(roll);
-    return ypr;}
+}
 /*      if (output_stream_on || output_single_on) output_angles();
     }
     else  // Output sensor values

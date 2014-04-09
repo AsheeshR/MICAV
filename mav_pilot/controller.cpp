@@ -17,7 +17,7 @@ static int16_t U[4] = {0, };
     0, 0, 0, 1
     };*/
 
-static uint16_t channels[7], thrust[4], heading[3]; /* WARNING: IMU RETURNS FLOATS! */
+static uint16_t channels[7], thrust[4]/*, heading[3]*/; /* WARNING: IMU RETURNS FLOATS! */
 
 void update_input()
 {
@@ -36,13 +36,21 @@ void update_input()
     U[2] = pid_droll(U[2]);
     U[3] = pid_daltitude(U[3]);
     
+#ifdef DEBUG_SERIAL
+    Serial.print("U Values : ");
+    Serial.print(U[0]);
+    Serial.print(U[1]);
+    Serial.print(U[2]);
+    Serial.print(U[3]);
+    Serial.println();
+#endif
 }
 
-void update_state()
+void update_state(float heading[])
 {
     /* X */
     //update_IMU();
-    
+    //imu_loop(ypr2);
     //X[0] = ; //x
     //X[1] = ; //y
     //X[2] = ; //z
@@ -58,6 +66,24 @@ void update_state()
     X[9] = heading[0] - X[6]; //dYAW
     X[10] = heading[1] - X[7]; //dPITCH
     X[11] = heading[2] - X[8]; //dROLL
+
+#ifdef DEBUG_SERIAL
+    Serial.print("YPR Values : ");
+    Serial.print(X[6]);
+    Serial.print(X[7]);
+    Serial.print(X[8]);
+    Serial.println();
+#endif
+
+
+#ifdef DEBUG_SERIAL
+    Serial.print("dYdPdR Values : ");
+    Serial.print(X[9]);
+    Serial.print(X[10]);
+    Serial.print(X[11]);
+    Serial.println();
+#endif
+
 }
 
 void update_control()
@@ -95,7 +121,16 @@ void write_output()
 	 1,1,1,1,
 	 1,1,1,1
 	};
-
+    
+#ifdef DEBUG_SERIAL
+    Serial.print("Motors Values : ");
+    Serial.print(thrust[0]);
+    Serial.print(thrust[1]);
+    Serial.print(thrust[2]);
+    Serial.print(thrust[3]);
+    Serial.println();
+#endif
+    
     
     thrust[0] = C[0][0] * U[0] + C[0][1] * U[1] + C[0][2] * U[2] + C[0][3] * U[3];
     thrust[1] = C[1][0] * U[0] + C[1][1] * U[1] + C[1][2] * U[2] + C[1][3] * U[3];
