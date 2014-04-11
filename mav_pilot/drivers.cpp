@@ -2,7 +2,6 @@
 
 #include "drivers.h"
 
-/* Setup motors */
 
 static Servo esc[4];
 
@@ -20,13 +19,14 @@ void arm_motors()
     //return esc;
 }
 
-void update_motors(/*Servo * esc[],*/ uint16_t thrust[])
+void update_motors(/*Servo * esc[],*/ int16_t thrust[])
 {
-    /* Upper limit constraints */
-    thrust[0] = (thrust[0] > THRESHOLD_MOTOR0_MAX) ? THRESHOLD_MOTOR0_MAX : thrust[0];
-    thrust[1] = (thrust[1] > THRESHOLD_MOTOR1_MAX) ? THRESHOLD_MOTOR1_MAX : thrust[1];
-    thrust[2] = (thrust[2] > THRESHOLD_MOTOR2_MAX) ? THRESHOLD_MOTOR2_MAX : thrust[2];
-    thrust[3] = (thrust[3] > THRESHOLD_MOTOR3_MAX) ? THRESHOLD_MOTOR3_MAX : thrust[3];
+
+
+    thrust[0] = constrain(thrust[0],THRESHOLD_MOTOR0_MIN-25, THRESHOLD_MOTOR0_MAX);
+    thrust[1] = constrain(thrust[1],THRESHOLD_MOTOR1_MIN-25, THRESHOLD_MOTOR1_MAX);
+    thrust[2] = constrain(thrust[2],THRESHOLD_MOTOR2_MIN-25, THRESHOLD_MOTOR2_MAX);
+    thrust[3] = constrain(thrust[3],THRESHOLD_MOTOR3_MIN-25, THRESHOLD_MOTOR3_MAX);
 
     esc[0].write(thrust[0]);
     esc[1].write(thrust[1]);
@@ -65,14 +65,21 @@ void update_channels(uint16_t channels[])
 {
 
     channels[0] = pulseIn(PIN_THROTTLE, HIGH, 25000);
-    channels[1] = pulseIn(PIN_PITCH, HIGH, 25000);
-    channels[2] = pulseIn(PIN_ROLL, HIGH, 25000);
-    channels[3] = pulseIn(PIN_YAW, HIGH, 25000);
+    channels[1] = pulseIn(PIN_YAW, HIGH, 25000);
+    channels[2] = pulseIn(PIN_PITCH, HIGH, 25000);
+    channels[3] = pulseIn(PIN_ROLL, HIGH, 25000);
     
     
     channels[4] = pulseIn(PIN_AUX1, HIGH, 25000);
     channels[5] = pulseIn(PIN_AUX2, HIGH, 25000);
 //    channels[6] = pulseIn(PIN_AUTO, HIGH, 25000);
+
+    channels[0] = constrain(channels[0], CHANNEL1_MIN, CHANNEL1_MAX);
+    channels[1] = constrain(channels[1], CHANNEL2_MIN, CHANNEL2_MAX);
+    channels[2] = constrain(channels[2], CHANNEL3_MIN, CHANNEL3_MAX);
+    channels[3] = constrain(channels[3], CHANNEL4_MIN, CHANNEL4_MAX);
+
+    
 
 }
 

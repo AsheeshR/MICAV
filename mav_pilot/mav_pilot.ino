@@ -4,6 +4,8 @@
 //#include <Serial.h>
 #include <Arduino.h>
 
+#define DEBUG_SERIAL 1
+
 /* Project Header Files */
 #include "config.h"
 #include "drivers.h"
@@ -16,6 +18,8 @@
 void setup()
 {
     start_pilot();
+    Serial.begin(57600);
+
 };
 
 void loop()

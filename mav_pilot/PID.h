@@ -2,20 +2,22 @@
 
 #include <stdint.h>
 
-#define KP_DYAW 0
-#define KI_DYAW 0
+#define DEBUG_SERIAL 1
+
+#define KP_DYAW 0.80
+#define KI_DYAW 0.01
 #define KD_DYAW 0
 
-#define KP_DPITCH 0
-#define KI_DPITCH 0
+#define KP_DPITCH 0.80
+#define KI_DPITCH 0.01
 #define KD_DPITCH 0
 
-#define KP_DROLL 0
-#define KI_DROLL 0
+#define KP_DROLL 0.80
+#define KI_DROLL 0.01
 #define KD_DROLL 0
 
-#define KP_DALTITUDE 0
-#define KI_DALTITUDE 0
+#define KP_DALTITUDE 0.80
+#define KI_DALTITUDE 0.01
 #define KD_DALTITUDE 0
 
 int16_t pid_dyaw(int16_t dyaw);

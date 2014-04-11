@@ -45,7 +45,8 @@
 
 
 /* Configuration Values for Channels */
-
+/* Morning Range */
+/*
 #define CHANNEL1_MIN 1100 
 #define CHANNEL1_MAX 1875
 
@@ -57,4 +58,17 @@
 
 #define CHANNEL4_MIN 1100
 #define CHANNEL4_MAX 1875
+
+/* Evening Range */
+#define CHANNEL1_MIN 950 
+#define CHANNEL1_MAX 1650
+
+#define CHANNEL2_MIN 950
+#define CHANNEL2_MAX 1650
+
+#define CHANNEL3_MIN 950
+#define CHANNEL3_MAX 1650
+
+#define CHANNEL4_MIN 950
+#define CHANNEL4_MAX 1650
 

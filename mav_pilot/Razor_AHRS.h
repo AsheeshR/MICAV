@@ -63,21 +63,21 @@
 // Put MIN/MAX and OFFSET readings for your board here!
 // Accelerometer
 // "accel x,y,z (min/max) = X_MIN/X_MAX  Y_MIN/Y_MAX  Z_MIN/Z_MAX"
-#define ACCEL_X_MIN ((float) -250)
-#define ACCEL_X_MAX ((float) 250)
-#define ACCEL_Y_MIN ((float) -250)
-#define ACCEL_Y_MAX ((float) 250)
-#define ACCEL_Z_MIN ((float) -250)
-#define ACCEL_Z_MAX ((float) 250)
+#define ACCEL_X_MIN ((float) -282)
+#define ACCEL_X_MAX ((float) 298)
+#define ACCEL_Y_MIN ((float) -339)
+#define ACCEL_Y_MAX ((float) 298)
+#define ACCEL_Z_MIN ((float) -336)
+#define ACCEL_Z_MAX ((float) 307)
 
 // Magnetometer (standard calibration mode)
 // "magn x,y,z (min/max) = X_MIN/X_MAX  Y_MIN/Y_MAX  Z_MIN/Z_MAX"
-#define MAGN_X_MIN ((float) -600)
-#define MAGN_X_MAX ((float) 600)
-#define MAGN_Y_MIN ((float) -600)
-#define MAGN_Y_MAX ((float) 600)
-#define MAGN_Z_MIN ((float) -600)
-#define MAGN_Z_MAX ((float) 600)
+#define MAGN_X_MIN ((float) -186)
+#define MAGN_X_MAX ((float) 461)
+#define MAGN_Y_MIN ((float) -161)
+#define MAGN_Y_MAX ((float) 380)
+#define MAGN_Z_MIN ((float) 87) //?
+#define MAGN_Z_MAX ((float) 663)
 
 // Magnetometer (extended calibration mode)
 // Uncommend to use extended magnetometer calibration (compensates hard & soft iron errors)
@@ -87,9 +87,9 @@
 
 // Gyroscope
 // "gyro x,y,z (current/average) = .../OFFSET_X  .../OFFSET_Y  .../OFFSET_Z
-#define GYRO_AVERAGE_OFFSET_X ((float) 0.0)
-#define GYRO_AVERAGE_OFFSET_Y ((float) 0.0)
-#define GYRO_AVERAGE_OFFSET_Z ((float) 0.0)
+#define GYRO_AVERAGE_OFFSET_X ((float) 16.19)
+#define GYRO_AVERAGE_OFFSET_Y ((float) 6.62)
+#define GYRO_AVERAGE_OFFSET_Z ((float) -11.39)
 
 /*
 // Calibration example:
@@ -126,9 +126,9 @@ const float magn_ellipsoid_transform[3][3] = {{0.902, -0.00354, 0.000636}, {-0.0
 #define GYRO_AVERAGE_OFFSET_Z ((float) -18.36)
 */
 
-#define CALIBRATION__MAGN_USE_EXTENDED true
-const float magn_ellipsoid_center[3] = {3.45931e+27, 3.95479e+28, 1.83475e+28};
-const float magn_ellipsoid_transform[3][3] = {{NaN, NaN, NaN}, {NaN, NaN, NaN}, {NaN, NaN, NaN}};
+//#define CALIBRATION__MAGN_USE_EXTENDED true
+//const float magn_ellipsoid_center[3] = {3.45931e+27, 3.95479e+28, 1.83475e+28};
+//const float magn_ellipsoid_transform[3][3] = {{NaN, NaN, NaN}, {NaN, NaN, NaN}, {NaN, NaN, NaN}};
 
 // DEBUG OPTIONS
 /*****************************************************************/

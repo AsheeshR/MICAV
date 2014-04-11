@@ -1,5 +1,6 @@
 #include "Razor_AHRS.h"
 
+//const float magn_ellipsoid_center[3] = {3.45931e+27, 3.95479e+28, 1.83475e+28};
 // Select your startup output mode and format here!
 int output_mode = OUTPUT__MODE_ANGLES;
 int output_format = OUTPUT__FORMAT_TEXT;

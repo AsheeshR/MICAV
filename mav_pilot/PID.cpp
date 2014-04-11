@@ -4,7 +4,7 @@
 
 int16_t pid_dyaw(int16_t dyaw)
 {
-    static uint16_t dyaw_old = 0;
+    static int16_t dyaw_old = 0;
     return 
 	(
 	dyaw_old = 
