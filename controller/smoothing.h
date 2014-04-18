@@ -1,5 +1,5 @@
 //This file will contain prototypes for the smoothing algorithms
-#ifndef SMOOTH
+#ifndef MICROSMOOTH
 #define SMOOTH
 
 #define SMA_LENGTH 43

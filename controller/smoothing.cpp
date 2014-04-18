@@ -1,5 +1,5 @@
 //This file will contain implementations of the smoothing algorithms
-#ifndef SMOOTH2
+#ifndef MICROSMOOTH
 #define SMOOTH2
 
 #include "smoothing.h"

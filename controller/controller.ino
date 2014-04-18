@@ -1,12 +1,15 @@
+#include <microsmooth.h>
+#include <stdint.h>
 #include <Servo.h> 
-#include "smoothing.h"
+//#include "smoothing.h"
 #include "driver.h"
 #include "constants.h"
 
 int ch1,ch3, ch2, thrust, modifier_pitch, modifier_roll;
 
 int c1_pitch, c2_pitch, c1_roll, c2_roll;   
- 
+uint16_t *history;
+
 Servo esc1, esc2, esc3, esc4;
 
 void setup()
@@ -15,7 +18,7 @@ void setup()
   esc2.attach(A1);    esc2.writeMicroseconds(750);
   esc3.attach(A2);    esc3.writeMicroseconds(750);
   esc4.attach(A3);    esc4.writeMicroseconds(750);
-  
+  history=ms_init(KZA);
 //  digitalWrite(2, LOW);//GND for ESC4
  // digitalWrite(12, LOW);//GND for ESC
   
@@ -37,7 +40,6 @@ void loop()
   //Serial.print(millis());
   //Serial.print(",");
   //Serial.print(ch1);
-  ch1_smooth = KZ_filter(ch1);
   t2=micros();
   Serial.print(t1);
   Serial.print(",");  
