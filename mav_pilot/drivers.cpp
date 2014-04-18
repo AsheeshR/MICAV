@@ -13,9 +13,11 @@ void arm_motors()
     esc[1].attach(PIN_MOTOR1);    esc[1].writeMicroseconds(750);
     esc[2].attach(PIN_MOTOR2);    esc[2].writeMicroseconds(750);
     esc[3].attach(PIN_MOTOR3);    esc[3].writeMicroseconds(750);
- 
-    delay(10000);
-    
+
+//#ifndef DEBUG_SERIAL /* Watch out!! */
+    //  delay(10000);
+//#endif
+
     //return esc;
 }
 

@@ -5,6 +5,8 @@
 
 #include "controller.h"
 
+#define MIRROR_PI(theeta) ((theeta>=0)?(180-theeta):(-180-(theeta)));
+
 //static int16_t X_dot[12] = {0, };
 static int16_t X[12] = {0, };
 static int16_t Y[12] = {0, };
@@ -37,6 +39,9 @@ void update_input()
     /* Calculate Errors */
     U[0] = /*X[5] -*/ map(channels[0], CHANNEL1_MIN, CHANNEL1_MAX, -100, 100);
     
+    U[0] = (U[0]<20 && U[0]>-20) ? 0 : U[0];
+
+    
     U[1] = X[9] - map(channels[1], CHANNEL2_MIN, CHANNEL2_MAX, MIN_DYAW, MAX_DYAW); 
     U[2] = X[10] - map(channels[2], CHANNEL3_MIN, CHANNEL3_MAX, MIN_DPITCH, MAX_DPITCH);
     U[3] = X[11] - map(channels[3], CHANNEL4_MIN, CHANNEL4_MAX, MIN_DROLL, MAX_DROLL);
@@ -57,8 +62,8 @@ void update_input()
 #ifdef DEBUG_SERIAL
     Serial.print("U Values : Pre PID ");
     Serial.print(U[0]);     Serial.print(" ");
-    Serial.print(U[1]);     Serial.print(" ");
-    Serial.print(U[2]);     Serial.print(" ");
+//    Serial.print(U[1]);     Serial.print(" ");
+//    Serial.print(U[2]);     Serial.print(" ");
     Serial.print(U[3]);     Serial.print(" ");
     Serial.println();
 #endif
@@ -70,12 +75,15 @@ void update_input()
     U[2] = pid_dpitch(U[2]);
     U[3] = pid_droll(U[3]);
 
-    
+/*    U[1] = constrain(U[1], -30, 30);
+    U[2] = constrain(U[2], -30, 30);
+    U[3] = constrain(U[3], -30, 30);
+*/    
 #ifdef DEBUG_SERIAL
     Serial.print("U Values : ");
     Serial.print(U[0]);     Serial.print(" ");
-    Serial.print(U[1]);     Serial.print(" ");
-    Serial.print(U[2]);     Serial.print(" ");
+//    Serial.print(U[1]);     Serial.print(" ");
+//    Serial.print(U[2]);     Serial.print(" ");
     Serial.print(U[3]);     Serial.print(" ");
     Serial.println();
 #endif
@@ -98,6 +106,7 @@ void update_state(float heading[])
        decimal point, upgrading it to int with 1 digit loss of information*/
     heading[0] *= 10; 
     heading[1] *= 10; 
+    heading[2] = MIRROR_PI(heading[2]); //Since our IMU is inverted
     heading[2] *= 10; 
 
     
@@ -123,8 +132,8 @@ void update_state(float heading[])
 
 #ifdef DEBUG_SERIAL
     Serial.print("dYdPdR Values : ");
-    Serial.print(X[9]);  Serial.print(" ");
-    Serial.print(X[10]);  Serial.print(" ");
+//    Serial.print(X[9]);  Serial.print(" ");
+//   Serial.print(X[10]);  Serial.print(" ");
     Serial.print(X[11]);  Serial.print(" ");
     Serial.println();
 #endif
@@ -172,10 +181,10 @@ void update_output()
 
 int8_t D[][4] = 
 {
-    1,  1, -1, -1,
-    1, -1, -1,  1,
-    1,  1,  1,  1,
-    1, -1,  1, -1
+    1,  1, -1,  1,
+    1, -1, -1, -1,
+    1,  1,  1, -1,
+    1, -1,  1,  1
 };
 
 void write_output()

@@ -18,9 +18,9 @@
 //#define PIN_ 12
 //#define PIN_ 13
 #define PIN_MOTOR2 A0
-#define PIN_MOTOR1 A1
+#define PIN_MOTOR0 A1
 #define PIN_MOTOR3 A2
-#define PIN_MOTOR0 A3
+#define PIN_MOTOR1 A3
 //#define PIN_ 18 IMU Pins
 //#define PIN_ 19
 
@@ -58,7 +58,7 @@
 
 #define CHANNEL4_MIN 1100
 #define CHANNEL4_MAX 1875
-
+*/
 /* Evening Range */
 #define CHANNEL1_MIN 950 
 #define CHANNEL1_MAX 1650
@@ -71,4 +71,3 @@
 
 #define CHANNEL4_MIN 950
 #define CHANNEL4_MAX 1650
-

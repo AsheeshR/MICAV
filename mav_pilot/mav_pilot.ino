@@ -24,5 +24,8 @@ void setup()
 
 void loop()
 {
+    int t = millis();
     update_pilot();
+    Serial.print("Loop time: ");
+    Serial.println(millis()-t);
 };
