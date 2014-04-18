@@ -22,10 +22,12 @@ void setup()
 
 };
 
+uint32_t t_mav_pilot = 0;
+
 void loop()
 {
-    int t = millis();
+    t_mav_pilot = millis();
     update_pilot();
     Serial.print("Loop time: ");
-    Serial.println(millis()-t);
+    Serial.println(millis()-t_mav_pilot);
 };

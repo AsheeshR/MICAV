@@ -57,21 +57,35 @@ void update_input()
 //    Serial.print(U[3]);     Serial.print(" ");
     Serial.println();
 #endif
-
+    
 
 #ifdef DEBUG_SERIAL
     Serial.print("U Values : Pre PID ");
-    Serial.print(U[0]);     Serial.print(" ");
+//    Serial.print(U[0]);     Serial.print(" ");
 //    Serial.print(U[1]);     Serial.print(" ");
-//    Serial.print(U[2]);     Serial.print(" ");
-    Serial.print(U[3]);     Serial.print(" ");
+    Serial.print(U[2]);     Serial.print(" ");
+//    Serial.print(U[3]);     Serial.print(" ");
     Serial.println();
 #endif
+
+    U[1]/=4; /* Dividing by 4 to constrain it to -25 +25 range */
+    U[2]/=4;
+    U[3]/=4;
+
+#ifdef DEBUG_SERIAL
+    Serial.print("U Values : After Division ");
+//    Serial.print(U[0]);     Serial.print(" ");
+//    Serial.print(U[1]);     Serial.print(" ");
+    Serial.print(U[2]);     Serial.print(" ");
+//    Serial.print(U[3]);     Serial.print(" ");
+    Serial.println();
+#endif
+
 
     /* Apply PID to errors */
     /* This transform E(t) -> U(t) */
     /* U[0] = pid_daltitude(U[0]); No feedback yet*/
-    U[1] = pid_dyaw(U[1]);
+    U[1] = pid_dyaw(U[1]); 
     U[2] = pid_dpitch(U[2]);
     U[3] = pid_droll(U[3]);
 
@@ -81,16 +95,21 @@ void update_input()
 */    
 #ifdef DEBUG_SERIAL
     Serial.print("U Values : ");
-    Serial.print(U[0]);     Serial.print(" ");
+//    Serial.print(U[0]);     Serial.print(" ");
 //    Serial.print(U[1]);     Serial.print(" ");
-//    Serial.print(U[2]);     Serial.print(" ");
-    Serial.print(U[3]);     Serial.print(" ");
+    Serial.print(U[2]);     Serial.print(" ");
+//    Serial.print(U[3]);     Serial.print(" ");
     Serial.println();
 #endif
 }
 
 void update_state(float heading[])
 {
+    int16_t local_heading[3]; /* Sometimes, the loop time is less than the IMU update time, in which case the heading array is not updated.
+			       * If the heading array is not updated, then it gets multiplied by 10 twice, as it retains the previously
+			       * modified values. To handle this case, a local copy of the heading array is used 
+			       */
+
     /* X */
     //update_IMU();
     //imu_loop(ypr2);
@@ -104,20 +123,20 @@ void update_state(float heading[])
     
     /* Since our domain is int, and heading carries decimal digits after
        decimal point, upgrading it to int with 1 digit loss of information*/
-    heading[0] *= 10; 
-    heading[1] *= 10; 
-    heading[2] = MIRROR_PI(heading[2]); //Since our IMU is inverted
-    heading[2] *= 10; 
+    local_heading[0] = heading[0] * 10; 
+    local_heading[1] = heading[1] * 10; 
+    local_heading[2] = MIRROR_PI(heading[2]);  /* Since our IMU is inverted */ 
+    local_heading[2] *= 10;
 
     
-    X[9] = heading[0] - X[6]; //dYAW
-    X[10] = heading[1] - X[7]; //dPITCH
-    X[11] = heading[2] - X[8]; //dROLL
+    X[9] = local_heading[0] - X[6]; //dYAW
+    X[10] = local_heading[1] - X[7]; //dPITCH
+    X[11] = local_heading[2] - X[8]; //dROLL
 
     /* These will be 4 digits long from -3600 to +3600 */
-    X[6] = heading[0]; //YAW
-    X[7] = heading[1]; //PITCH
-    X[8] = heading[2]; //ROLL
+    X[6] = local_heading[0]; //YAW
+    X[7] = local_heading[1]; //PITCH
+    X[8] = local_heading[2]; //ROLL
 
 
 
@@ -133,8 +152,8 @@ void update_state(float heading[])
 #ifdef DEBUG_SERIAL
     Serial.print("dYdPdR Values : ");
 //    Serial.print(X[9]);  Serial.print(" ");
-//   Serial.print(X[10]);  Serial.print(" ");
-    Serial.print(X[11]);  Serial.print(" ");
+    Serial.print(X[10]);  Serial.print(" ");
+//    Serial.print(X[11]);  Serial.print(" ");
     Serial.println();
 #endif
 
@@ -195,10 +214,10 @@ void write_output()
      * T = T_old + T_dot
      */
 
-    thrust[0] = thrust[0] + D[0][0] * U[0] + D[0][1] * U[1] + D[0][2] * U[2] + D[0][3] * U[3];
-    thrust[1] = thrust[1] + D[1][0] * U[0] + D[1][1] * U[1] + D[1][2] * U[2] + D[1][3] * U[3];
-    thrust[2] = thrust[2] + D[2][0] * U[0] + D[2][1] * U[1] + D[2][2] * U[2] + D[2][3] * U[3];
-    thrust[3] = thrust[3] + D[3][0] * U[0] + D[3][1] * U[1] + D[3][2] * U[2] + D[3][3] * U[3];
+    thrust[0] = thrust[0] + D[0][0] * U[0] + /*D[0][1] * U[1]*/ + D[0][2] * U[2] + D[0][3] * U[3];
+    thrust[1] = thrust[1] + D[1][0] * U[0] + /*D[1][1] * U[1]*/ + D[1][2] * U[2] + D[1][3] * U[3];
+    thrust[2] = thrust[2] + D[2][0] * U[0] + /*D[2][1] * U[1]*/ + D[2][2] * U[2] + D[2][3] * U[3];
+    thrust[3] = thrust[3] + D[3][0] * U[0] + /*D[3][1] * U[1]*/ + D[3][2] * U[2] + D[3][3] * U[3];
 
     update_motors(/*Servo * esc[],*/thrust);
 

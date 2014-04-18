@@ -10,17 +10,17 @@
 #define PID_MIN_DYAW -30
 #define PID_MAX_DYAW 30
 
-#define KP_DPITCH 0.10
-#define KI_DPITCH 0.01
-#define KD_DPITCH 0
-#define PID_MIN_DPITCH -30
-#define PID_MAX_DPITCH 30
+#define KP_DPITCH 0.80
+#define KI_DPITCH 0.20
+#define KD_DPITCH 0.00
+#define PID_MIN_DPITCH -50
+#define PID_MAX_DPITCH 50
 
-#define KP_DROLL 0.10
-#define KI_DROLL 0.01
-#define KD_DROLL 0
-#define PID_MIN_DROLL -30
-#define PID_MAX_DROLL 30
+#define KP_DROLL 0.80 /* Theoretical Tuning */
+#define KI_DROLL 0.20 
+#define KD_DROLL 0.00
+#define PID_MIN_DROLL -50
+#define PID_MAX_DROLL 50
 
 #define KP_DALTITUDE 0.80
 #define KI_DALTITUDE 0.01
