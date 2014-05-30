@@ -22,12 +22,22 @@
 #define PID_MIN_DROLL -50
 #define PID_MAX_DROLL 50
 
+#define KP_ROLL 4.80 /* Theoretical Tuning */
+#define KI_ROLL 0.10 
+#define KD_ROLL 0.00
+#define PID_MIN_ROLL -125
+#define PID_MAX_ROLL 125
+
 #define KP_DALTITUDE 0.80
 #define KI_DALTITUDE 0.01
 #define KD_DALTITUDE 0
 
 int16_t pid_dyaw(int16_t dyaw);
+
 int16_t pid_dpitch(int16_t dpitch);
+
 int16_t pid_droll(int16_t droll);
+int16_t pid_roll(int16_t roll);
+
 int16_t pid_daltitude(int16_t daltitude);
 

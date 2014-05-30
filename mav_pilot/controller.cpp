@@ -37,22 +37,22 @@ void update_input()
     update_channels(channels);
     
     /* Calculate Errors */
-    U[0] = /*X[5] -*/ map(channels[0], CHANNEL1_MIN, CHANNEL1_MAX, -100, 100);
+    //U[0] = /*X[5] -*/ map(channels[0], CHANNEL1_MIN, CHANNEL1_MAX, -100, 100);
     
-    U[0] = (U[0]<20 && U[0]>-20) ? 0 : U[0];
-
+    //U[0] = (U[0]<20 && U[0]>-20) ? 0 : U[0];
+    U[0] = channels[0];
     
-    U[1] = X[9] - map(channels[1], CHANNEL2_MIN, CHANNEL2_MAX, MIN_DYAW, MAX_DYAW); 
-    U[2] = X[10] - map(channels[2], CHANNEL3_MIN, CHANNEL3_MAX, MIN_DPITCH, MAX_DPITCH);
-    U[3] = X[11] - map(channels[3], CHANNEL4_MIN, CHANNEL4_MAX, MIN_DROLL, MAX_DROLL);
+    //U[1] = X[9] - map(channels[1], CHANNEL2_MIN, CHANNEL2_MAX, MIN_DYAW, MAX_DYAW); 
+    //U[2] = X[10] - map(channels[2], CHANNEL3_MIN, CHANNEL3_MAX, MIN_DPITCH, MAX_DPITCH);
+    U[3] = map(channels[3], CHANNEL4_MIN, CHANNEL4_MAX, MIN_ROLL, MAX_ROLL) - X[8];
 
     /* Yaw Scaling */
     /* U[0]/=4;    U[1]/=4;    U[2]/=4;*/
 
 #ifdef DEBUG_SERIAL
     Serial.print("Map Values : ");
-    Serial.print(map(channels[1], CHANNEL2_MIN, CHANNEL2_MAX, MIN_DYAW, MAX_DYAW));     Serial.print(" ");
-    Serial.print(map(channels[2], CHANNEL3_MIN, CHANNEL3_MAX, MIN_DPITCH, MAX_DPITCH));     Serial.print(" ");
+//    Serial.print(map(channels[1], CHANNEL2_MIN, CHANNEL2_MAX, MIN_DYAW, MAX_DYAW));     Serial.print(" ");
+//    Serial.print(map(channels[2], CHANNEL3_MIN, CHANNEL3_MAX, MIN_DPITCH, MAX_DPITCH));     Serial.print(" ");
     Serial.print(map(channels[3], CHANNEL4_MIN, CHANNEL4_MAX, MIN_DROLL, MAX_DROLL));     Serial.print(" ");
 //    Serial.print(U[3]);     Serial.print(" ");
     Serial.println();
@@ -61,23 +61,23 @@ void update_input()
 
 #ifdef DEBUG_SERIAL
     Serial.print("U Values : Pre PID ");
-//    Serial.print(U[0]);     Serial.print(" ");
+    Serial.print(U[0]);     Serial.print(" ");
 //    Serial.print(U[1]);     Serial.print(" ");
-    Serial.print(U[2]);     Serial.print(" ");
-//    Serial.print(U[3]);     Serial.print(" ");
+//    Serial.print(U[2]);     Serial.print(" ");
+    Serial.print(U[3]);     Serial.print(" ");
     Serial.println();
 #endif
 
-    U[1]/=4; /* Dividing by 4 to constrain it to -25 +25 range */
-    U[2]/=4;
+//    U[1]/=4; /* Dividing by 4 to constrain it to -25 +25 range */
+//    U[2]/=4;
     U[3]/=4;
 
 #ifdef DEBUG_SERIAL
     Serial.print("U Values : After Division ");
 //    Serial.print(U[0]);     Serial.print(" ");
 //    Serial.print(U[1]);     Serial.print(" ");
-    Serial.print(U[2]);     Serial.print(" ");
-//    Serial.print(U[3]);     Serial.print(" ");
+//    Serial.print(U[2]);     Serial.print(" ");
+    Serial.print(U[3]);     Serial.print(" ");
     Serial.println();
 #endif
 
@@ -85,9 +85,9 @@ void update_input()
     /* Apply PID to errors */
     /* This transform E(t) -> U(t) */
     /* U[0] = pid_daltitude(U[0]); No feedback yet*/
-    U[1] = pid_dyaw(U[1]); 
-    U[2] = pid_dpitch(U[2]);
-    U[3] = pid_droll(U[3]);
+//    U[1] = pid_dyaw(U[1]); 
+//    U[2] = pid_dpitch(U[2]);
+    U[3] = pid_roll(U[3]);
 
 /*    U[1] = constrain(U[1], -30, 30);
     U[2] = constrain(U[2], -30, 30);
@@ -95,10 +95,10 @@ void update_input()
 */    
 #ifdef DEBUG_SERIAL
     Serial.print("U Values : ");
-//    Serial.print(U[0]);     Serial.print(" ");
+    Serial.print(U[0]);     Serial.print(" ");
 //    Serial.print(U[1]);     Serial.print(" ");
-    Serial.print(U[2]);     Serial.print(" ");
-//    Serial.print(U[3]);     Serial.print(" ");
+//    Serial.print(U[2]);     Serial.print(" ");
+    Serial.print(U[3]);     Serial.print(" ");
     Serial.println();
 #endif
 }
@@ -149,12 +149,12 @@ void update_state(float heading[])
 #endif
 
 
-#ifdef DEBUG_SERIAL
-    Serial.print("dYdPdR Values : ");
+#ifndef DEBUG_SERIAL 
+//    Serial.print("dYdPdR Values : ");
 //    Serial.print(X[9]);  Serial.print(" ");
-    Serial.print(X[10]);  Serial.print(" ");
+//    Serial.print(X[10]);  Serial.print(" ");
 //    Serial.print(X[11]);  Serial.print(" ");
-    Serial.println();
+//    Serial.println();
 #endif
 
 }
@@ -213,11 +213,13 @@ void write_output()
      * T_dot = D * U 
      * T = T_old + T_dot
      */
-
-    thrust[0] = thrust[0] + D[0][0] * U[0] + /*D[0][1] * U[1]*/ + D[0][2] * U[2] + D[0][3] * U[3];
-    thrust[1] = thrust[1] + D[1][0] * U[0] + /*D[1][1] * U[1]*/ + D[1][2] * U[2] + D[1][3] * U[3];
-    thrust[2] = thrust[2] + D[2][0] * U[0] + /*D[2][1] * U[1]*/ + D[2][2] * U[2] + D[2][3] * U[3];
-    thrust[3] = thrust[3] + D[3][0] * U[0] + /*D[3][1] * U[1]*/ + D[3][2] * U[2] + D[3][3] * U[3];
+    
+    U[0] = map(U[0], CHANNEL1_MIN, CHANNEL1_MAX, THRESHOLD_MOTOR0_MIN, THRESHOLD_MOTOR0_MAX);
+    
+    thrust[0] = /*thrust[0] +*/ D[0][0] * U[0] + /*D[0][1] * U[1] + D[0][2] * U[2] +*/ D[0][3] * U[3];
+    thrust[1] = /*thrust[1] +*/ D[1][0] * U[0] + /*D[1][1] * U[1] + D[1][2] * U[2] +*/ D[1][3] * U[3];
+    thrust[2] = /*thrust[2] +*/ D[2][0] * U[0] + /*D[2][1] * U[1] + D[2][2] * U[2] +*/ D[2][3] * U[3];
+    thrust[3] = /*thrust[3] +*/ D[3][0] * U[0] + /*D[3][1] * U[1] + D[3][2] * U[2] +*/ D[3][3] * U[3];
 
     update_motors(/*Servo * esc[],*/thrust);
 

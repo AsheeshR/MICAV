@@ -38,6 +38,22 @@ int16_t pid_droll(int16_t droll)
     return droll_old;
 }
 
+
+int16_t pid_roll(int16_t roll)
+{
+    static int16_t roll_old = 0; /* These should be signed , always! */
+    int16_t result = 
+	(KP_ROLL * roll) + 
+	(KI_ROLL * (roll_old + roll)) +
+	(KD_ROLL * (roll - roll_old))
+	;
+    roll_old += roll;
+    result = constrain(result, PID_MIN_ROLL, PID_MAX_ROLL);
+    return -result;
+}
+
+
+
 int16_t pid_daltitude(int16_t daltitude)
 {
     static int16_t daltitude_old = 0;
