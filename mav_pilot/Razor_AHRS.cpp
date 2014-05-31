@@ -155,7 +155,7 @@ void turn_output_stream_on()
   digitalWrite(STATUS_LED_PIN, HIGH);
 }
 
-void turn_output_stream_off()
+/*void turn_output_stream_off()
 {
   output_stream_on = false;
   digitalWrite(STATUS_LED_PIN, LOW);
@@ -167,7 +167,7 @@ char readChar()
   while (Serial.available() < 1) { } // Block
   return Serial.read();
 }
-
+*/
 void imu_setup()
 {
   // Init serial output
@@ -816,7 +816,7 @@ void init_rotation_matrix(float m[3][3], float yaw, float pitch, float roll)
 /* This file is part of the Razor AHRS Firmware */
 
 // Output angles: yaw, pitch, roll
-/*void output_angles()
+void output_angles()
 {
   if (output_format == OUTPUT__FORMAT_BINARY)
   {
@@ -835,7 +835,7 @@ void init_rotation_matrix(float m[3][3], float yaw, float pitch, float roll)
   }
 }
 
-void output_calibration(int calibration_sensor)
+/*void output_calibration(int calibration_sensor)
 {
   if (calibration_sensor == 0)  // Accelerometer
   {
