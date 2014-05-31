@@ -15,7 +15,7 @@ void arm_motors()
     esc[3].attach(PIN_MOTOR3);    esc[3].writeMicroseconds(750);
 
 //#ifndef DEBUG_SERIAL /* Watch out!! */
-    //  delay(10000);
+//    delay(3000);
 //#endif
 
     //return esc;
@@ -30,10 +30,10 @@ void update_motors(/*Servo * esc[],*/ int16_t thrust[])
     thrust[2] = constrain(thrust[2],THRESHOLD_MOTOR2_MIN-25, THRESHOLD_MOTOR2_MAX);
     thrust[3] = constrain(thrust[3],THRESHOLD_MOTOR3_MIN-25, THRESHOLD_MOTOR3_MAX);
 
-    esc[0].write(thrust[0]);
-    esc[1].write(thrust[1]);
-    esc[2].write(thrust[2]);
-    esc[3].write(thrust[3]);
+    esc[0].writeMicroseconds(thrust[0]);
+    esc[1].writeMicroseconds(thrust[1]);
+    esc[2].writeMicroseconds(thrust[2]);
+    esc[3].writeMicroseconds(thrust[3]);
 
 }
 
