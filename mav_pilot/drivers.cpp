@@ -59,7 +59,6 @@ void setup_channels()
     pinMode(PIN_AUX2, INPUT);
 //    pinMode(PIN_AUTO, INPUT);
 
-
 }
 
 
@@ -70,10 +69,9 @@ void update_channels(uint16_t channels[])
     channels[1] = pulseIn(PIN_YAW, HIGH, 25000);
     channels[2] = pulseIn(PIN_PITCH, HIGH, 25000);
     channels[3] = pulseIn(PIN_ROLL, HIGH, 25000);
-    
-    
-    channels[4] = pulseIn(PIN_AUX1, HIGH, 25000);
-    channels[5] = pulseIn(PIN_AUX2, HIGH, 25000);
+  
+//    channels[4] = pulseIn(PIN_AUX1, HIGH, 25000);
+//    channels[5] = pulseIn(PIN_AUX2, HIGH, 25000);
 //    channels[6] = pulseIn(PIN_AUTO, HIGH, 25000);
 
     channels[0] = constrain(channels[0], CHANNEL1_MIN, CHANNEL1_MAX);
