@@ -32,12 +32,12 @@
 #define KI_DALTITUDE 0.01
 #define KD_DALTITUDE 0
 
-int16_t pid_dyaw(int16_t dyaw);
+//int16_t pid_dyaw(int16_t dyaw);
 
-int16_t pid_dpitch(int16_t dpitch);
+//int16_t pid_dpitch(int16_t dpitch);
 
-int16_t pid_droll(int16_t droll);
+//int16_t pid_droll(int16_t droll);
 int16_t pid_roll(int16_t roll);
 
-int16_t pid_daltitude(int16_t daltitude);
+//int16_t pid_daltitude(int16_t daltitude);
 
