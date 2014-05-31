@@ -129,7 +129,7 @@ void compensate_sensor_errors() {
 }
 
 // Reset calibration session if reset_calibration_session_flag is set
-void check_reset_calibration_session()
+/*void check_reset_calibration_session()
 {
   // Raw sensor values have to be read already, but no error compensation applied
 
@@ -147,7 +147,7 @@ void check_reset_calibration_session()
   gyro_average[0] = gyro_average[1] = gyro_average[2] = 0.0f;
   
   reset_calibration_session_flag = false;
-}
+} */
 
 void turn_output_stream_on()
 {
@@ -189,11 +189,11 @@ void imu_setup()
   reset_sensor_fusion();
 
   // Init output
-#if (OUTPUT__HAS_RN_BLUETOOTH == true) || (OUTPUT__STARTUP_STREAM_ON == false)
+/*#if (OUTPUT__HAS_RN_BLUETOOTH == true) || (OUTPUT__STARTUP_STREAM_ON == false)
   turn_output_stream_off();
-#else
+#else*/
   turn_output_stream_on();
-#endif
+//#endif
 }
 
 
@@ -310,13 +310,13 @@ void imu_loop(float ypr[])
     // Update sensor readings
     read_sensors();
 
-    if (output_mode == OUTPUT__MODE_CALIBRATE_SENSORS)  // We're in calibration mode
+  /*  if (output_mode == OUTPUT__MODE_CALIBRATE_SENSORS)  // We're in calibration mode
     {
       check_reset_calibration_session();  // Check if this session needs a reset
       if (output_stream_on || output_single_on) output_calibration(curr_calibration_sensor);
     }
-    else if (output_mode == OUTPUT__MODE_ANGLES)  // Output angles
-    {
+    else if (output_mode == OUTPUT__MODE_ANGLES) */ // Output angles
+    
       // Apply sensor calibration
       compensate_sensor_errors();
     
@@ -326,11 +326,12 @@ void imu_loop(float ypr[])
       Normalize();
       Drift_correction();
       Euler_angles();
-    }
+    `
     
     ypr[0]=TO_DEG(yaw);
     ypr[1]=TO_DEG(pitch);
     ypr[2]=TO_DEG(roll);
+}
 }
 /*      if (output_stream_on || output_single_on) output_angles();
     }
@@ -815,7 +816,7 @@ void init_rotation_matrix(float m[3][3], float yaw, float pitch, float roll)
 /* This file is part of the Razor AHRS Firmware */
 
 // Output angles: yaw, pitch, roll
-void output_angles()
+/*void output_angles()
 {
   if (output_format == OUTPUT__FORMAT_BINARY)
   {
@@ -942,4 +943,4 @@ void output_sensors()
       output_sensors_text('C');
     }
   }
-}
+}*/
