@@ -1,19 +1,23 @@
 /* Global Header Files */
+#define PINMODE
+
 #include <Wire.h>
 #include <Servo.h>
 //#include <Serial.h>
 #include <Arduino.h>
+//#include <PinChangeInt.h>
 
 #define DEBUG_SERIAL 1
 
 /* Project Header Files */
 #include "config.h"
-#include "drivers.h"
 #include "PID.h"
+#include "drivers.h"
+//#include "PID.h"
 #include "controller.h"
 #include "Razor_AHRS.h"
 //#include "pilot.h"
-
+#include <PinChangeInt.h>
 
 float ypr2[3];
 
@@ -57,6 +61,7 @@ void start_pilot()
 
 
 //int flag = 1;
+int32_t t = 0;
 
 void update_pilot()
 {
@@ -64,28 +69,38 @@ void update_pilot()
 //#ifdef DEBUG_SERIAL    
 //    Serial.println("Update IMU");
 //#endif
+//    t=millis();
     imu_loop(ypr2);
+//    Serial.println("IMU Time");
+//    Serial.println(millis()-t);
 //    update_channels();
 //#ifdef DEBUG_SERIAL    
 //   Serial.println("Update X");
 //#endif
+//    t=millis();
     update_state(ypr2);
+//    Serial.println("State Time");
+//    Serial.println(millis()-t);
     //Run PID
 //#ifdef DEBUG_SERIAL    
 //    Serial.println("Update U");
 //#endif
+    t=millis();
     update_input();
-
+    Serial.println("Input Time");
+    Serial.println(millis()-t);
     //Update control system
 //#ifdef DEBUG_SERIAL    
 //    Serial.println("Update motors");
 //#endif
+//    t=millis();
     write_output();
+//    Serial.println("Output Time");
+//    Serial.println(millis()-t);
     //Update thrust values
     
 
 }
-
 
 void setup()
 {
@@ -97,9 +112,9 @@ uint32_t t_mav_pilot = 0, t_mav_pilot_update = 0;
 
 void loop()
 {
-    t_mav_pilot = t_mav_pilot_update;
+//    t_mav_pilot = t_mav_pilot_update;
     update_pilot();
-    t_mav_pilot_update = millis();
-    Serial.print("Loop time: ");
-    Serial.println(t_mav_pilot_update - t_mav_pilot);
+//    t_mav_pilot_update = millis();
+//    Serial.print("Loop time: ");
+//    Serial.println(t_mav_pilot_update - t_mav_pilot);
 };

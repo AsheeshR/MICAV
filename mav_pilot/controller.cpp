@@ -24,6 +24,7 @@ static int16_t thrust[4]/*, heading[3]*/; /* WARNING: IMU RETURNS FLOATS! */
 
 void update_input()
 {
+
     update_channels(channels);
     
     /* Calculate Errors */
@@ -51,11 +52,11 @@ void update_input()
 
 #ifdef DEBUG_SERIAL
     Serial.print("U Values : Pre PID ");
-    Serial.print(U[0]);     Serial.print(" ");
+//    Serial.print(U[0]);     Serial.print(" ");
 //    Serial.print(U[1]);     Serial.print(" ");
 //    Serial.print(U[2]);     Serial.print(" ");
-    Serial.print(U[3]);     Serial.print(" ");
-    Serial.println();
+    Serial.println(U[3]);//     Serial.println();
+//    Serial.println();
 #endif
 
 //    U[1]/=4; /* Dividing by 4 to constrain it to -25 +25 range */
@@ -68,7 +69,7 @@ void update_input()
 //    Serial.print(U[0]);     Serial.print(" ");
 //    Serial.print(U[1]);     Serial.print(" ");
 //    Serial.print(U[2]);     Serial.print(" ");
-    Serial.print(U[3]);     Serial.print(" ");
+    Serial.println(U[3]);//     Serial.println();
 //    Serial.println();
 #endif
 
@@ -85,8 +86,8 @@ void update_input()
 //    Serial.print(U[0]);     Serial.print(" ");
 //    Serial.print(U[1]);     Serial.print(" ");
 //    Serial.print(U[2]);     Serial.print(" ");
-    Serial.print(U[3]);     Serial.print(" ");
-    Serial.println();
+    Serial.println(U[3]);//     Serial.println();
+//    Serial.println();
 #endif
 }
 
