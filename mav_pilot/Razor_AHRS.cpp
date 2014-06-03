@@ -1,4 +1,6 @@
 #include "Razor_AHRS.h"
+//#define Vector_Dot_Product(v1,v2)  ((v1)[0] * (v2)[0] + (v1)[1] * (v2)[1] + (v2)[2] * (v2)[2]) 
+//#define Vector_Cross_Product(out,v1,v2) {(out)[0] = (v1)[1] * (v2)[2] - (v1)[2] * (v2)[1] ; (out)[1] = (v1)[2] * (v2)[0] - (v1)[0] * (v2)[2] ; (out)[2] = (v1)[0] * (v2)[1] - (v1)[1] * (v2)[0] ; };
 
 //const float magn_ellipsoid_center[3] = {3.45931e+27, 3.95479e+28, 1.83475e+28};
 // Select your startup output mode and format here!
@@ -474,6 +476,7 @@ void Matrix_update(void)
   }
 }
 
+
 void Euler_angles(void)
 {
   pitch = -asin(DCM_Matrix[2][0]);
@@ -727,15 +730,13 @@ void Read_Gyro()
 // Computes the dot product of two vectors
 float Vector_Dot_Product(const float v1[3], const float v2[3])
 {
-  float result = 0;
+    
+   return (v1[0] * v2[0] + v1[1] * v2[1] + v2[2] * v2[2]) ;
   
-  for(int c = 0; c < 3; c++)
-  {
-    result += v1[c] * v2[c];
-  }
-  
-  return result; 
 }
+
+  
+
 
 // Computes the cross product of two vectors
 // out has to different from v1 and v2 (no in-place)!
@@ -745,6 +746,9 @@ void Vector_Cross_Product(float out[3], const float v1[3], const float v2[3])
   out[1] = (v1[2] * v2[0]) - (v1[0] * v2[2]);
   out[2] = (v1[0] * v2[1]) - (v1[1] * v2[0]);
 }
+
+
+
 
 // Multiply the vector by a scalar
 void Vector_Scale(float out[3], const float v[3], float scale)
@@ -756,7 +760,7 @@ void Vector_Scale(float out[3], const float v[3], float scale)
 }
 
 // Adds two vectors
-void Vector_Add(float out[3], const float v1[3], const float v2[3])
+inline void Vector_Add(float out[3], const float v1[3], const float v2[3])
 {
   for(int c = 0; c < 3; c++)
   {
@@ -815,7 +819,7 @@ void init_rotation_matrix(float m[3][3], float yaw, float pitch, float roll)
 /* This file is part of the Razor AHRS Firmware */
 
 // Output angles: yaw, pitch, roll
-void output_angles()
+inline void output_angles()
 {
 /*  if (output_format == OUTPUT__FORMAT_BINARY)
   {

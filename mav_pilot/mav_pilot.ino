@@ -69,11 +69,10 @@ void update_pilot()
 //#ifdef DEBUG_SERIAL    
 //    Serial.println("Update IMU");
 //#endif
-//    t=millis();
+///    t=millis();
     imu_loop(ypr2);
 //    Serial.println("IMU Time");
 //    Serial.println(millis()-t);
-//    update_channels();
 //#ifdef DEBUG_SERIAL    
 //   Serial.println("Update X");
 //#endif
@@ -85,10 +84,10 @@ void update_pilot()
 //#ifdef DEBUG_SERIAL    
 //    Serial.println("Update U");
 //#endif
-    t=millis();
+//    t=millis();
     update_input();
-    Serial.println("Input Time");
-    Serial.println(millis()-t);
+//    Serial.println("Input Time");
+//    Serial.println(millis()-t);
     //Update control system
 //#ifdef DEBUG_SERIAL    
 //    Serial.println("Update motors");
@@ -112,9 +111,9 @@ uint32_t t_mav_pilot = 0, t_mav_pilot_update = 0;
 
 void loop()
 {
-//    t_mav_pilot = t_mav_pilot_update;
+    t_mav_pilot = t_mav_pilot_update;
     update_pilot();
-//    t_mav_pilot_update = millis();
-//    Serial.print("Loop time: ");
-//    Serial.println(t_mav_pilot_update - t_mav_pilot);
+    t_mav_pilot_update = millis();
+    Serial.print("Loop time: ");
+    Serial.println(t_mav_pilot_update - t_mav_pilot);
 };
