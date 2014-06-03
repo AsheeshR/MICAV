@@ -5,6 +5,8 @@
 #define MICAV_DRIVERS
 //#define PINMODE /* Needed to access pin values */
 
+#define PINMODE
+
 #include "config.h"
 #include <PinChangeInt.h>
 #include <stdint.h>

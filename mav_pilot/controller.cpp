@@ -5,7 +5,7 @@
 
 #include "controller.h"
 
-#define MIRROR_PI(theeta) ((theeta>=0)?(180-theeta):(-180-(theeta)));
+#define MIRROR_PI(theeta) ((theeta>=0.00)?(180.00-theeta):(-180.00-(theeta)))
 
 
 static int16_t X[12] = {0, };
@@ -30,7 +30,7 @@ void update_input()
     /* Calculate Errors */
     //U[0] = /*X[5] -*/ map(channels[0], CHANNEL1_MIN, CHANNEL1_MAX, -100, 100);
     
-    //U[0] = channels[0];
+    U[0] = channels[0];
     U[0] = map(U[0], CHANNEL1_MIN, CHANNEL1_MAX, THRESHOLD_MOTOR0_MIN, THRESHOLD_MOTOR0_MAX); /* This is usable only if all motors are in the same range */
     
     //U[1] = X[9] - map(channels[1], CHANNEL2_MIN, CHANNEL2_MAX, MIN_DYAW, MAX_DYAW); 
@@ -41,12 +41,13 @@ void update_input()
     /* U[0]/=4;    U[1]/=4;    U[2]/=4;*/
 
 #ifdef DEBUG_SERIAL
-//    Serial.print("Map Values : ");
+    Serial.print("Map Values : ");
+    Serial.print(U[0]);     Serial.print(" ");
 //    Serial.print(map(channels[1], CHANNEL2_MIN, CHANNEL2_MAX, MIN_DYAW, MAX_DYAW));     Serial.print(" ");
 //    Serial.print(map(channels[2], CHANNEL3_MIN, CHANNEL3_MAX, MIN_DPITCH, MAX_DPITCH));     Serial.print(" ");
 //    Serial.print(map(channels[3], CHANNEL4_MIN, CHANNEL4_MAX, MIN_DROLL, MAX_DROLL));     Serial.print(" ");
-//    Serial.print(U[3]);     Serial.print(" ");
-//    Serial.println();
+    Serial.print(U[3]);     Serial.print(" ");
+    Serial.println();
 #endif
     
 
@@ -62,7 +63,7 @@ void update_input()
 //    U[1]/=4; /* Dividing by 4 to constrain it to -25 +25 range */
 //    U[2]/=4;
     //U[3]/=4;
-    U[3]>>=2; /*Much faster*/
+//    U[3]>>=2; /*Much faster*/
 
 #ifdef DEBUG_SERIAL
 //    Serial.print("U Values : After Division ");
@@ -113,8 +114,8 @@ void update_state(float heading[])
        decimal point, upgrading it to int with 1 digit loss of information*/
     local_heading[0] = heading[0] * 10; 
     local_heading[1] = heading[1] * 10; 
-    local_heading[2] = MIRROR_PI(heading[2]);  /* Since our IMU is inverted */ 
-    local_heading[2] *= 10;
+    local_heading[2] = (MIRROR_PI(heading[2])) * 10;  /* Since our IMU is inverted */ 
+//    local_heading[2] *= 10;
 
     
 //    X[9] = local_heading[0] - X[6]; //dYAW
