@@ -1,4 +1,7 @@
 /* This file defines the PID controllers for each state update */
+#ifndef MICAV_PID
+#define MICAV_PID
+
 #include <Arduino.h>
 #include <stdint.h>
 
@@ -41,3 +44,4 @@ int16_t pid_roll(int16_t roll);
 
 //int16_t pid_daltitude(int16_t daltitude);
 
+#endif /* MICAV_PID */

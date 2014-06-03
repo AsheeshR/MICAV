@@ -1,5 +1,7 @@
 /* This defines all the configuration variables for the entire system and the pin-map */
 
+#ifndef MICAV_CONFIG
+#define MICAV_CONFIG
 
 /* PIN Map */
 
@@ -85,3 +87,7 @@
 
 #define CHANNEL4_MIN 1440
 #define CHANNEL4_MAX 2400
+
+
+
+#endif /* MICAV_CONFIG */

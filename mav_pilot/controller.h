@@ -1,6 +1,8 @@
 /* This file defines the control system */
 /* Dependencies - Serial */
 
+#ifndef MICAV_CONTROLLER
+#define MICAV_CONTROLLER
 
 #include "config.h"
 #include "drivers.h"
@@ -30,3 +32,5 @@ void update_state(float []);
 //void update_output();
 
 void write_output();
+
+#endif /* MICAV_CONTROLLER */

@@ -1,7 +1,12 @@
 /* This file defines the motor and channel control functions */
 /* Dependencies - Serial & Servo */
 
+#ifndef MICAV_DRIVERS
+#define MICAV_DRIVERS
+//#define PINMODE /* Needed to access pin values */
+
 #include "config.h"
+#include <PinChangeInt.h>
 #include <stdint.h>
 #include <Arduino.h>
 #include <Servo.h>
@@ -26,3 +31,4 @@ void cutoff_motors();
 void setup_channels();
 void update_channels(uint16_t channels[]);
 
+#endif /* MICAV_DRIVERS */
