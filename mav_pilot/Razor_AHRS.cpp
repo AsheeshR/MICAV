@@ -326,12 +326,11 @@ void imu_loop(float ypr[])
       Normalize();
       Drift_correction();
       Euler_angles();
-    `
     
     ypr[0]=TO_DEG(yaw);
     ypr[1]=TO_DEG(pitch);
     ypr[2]=TO_DEG(roll);
-}
+//}
 }
 /*      if (output_stream_on || output_single_on) output_angles();
     }
@@ -818,7 +817,7 @@ void init_rotation_matrix(float m[3][3], float yaw, float pitch, float roll)
 // Output angles: yaw, pitch, roll
 void output_angles()
 {
-  if (output_format == OUTPUT__FORMAT_BINARY)
+/*  if (output_format == OUTPUT__FORMAT_BINARY)
   {
     float ypr[3];  
     ypr[0] = TO_DEG(yaw);
@@ -827,13 +826,13 @@ void output_angles()
     Serial.write((byte*) ypr, 12);  // No new-line
   }
   else if (output_format == OUTPUT__FORMAT_TEXT)
-  {
+  {*/
     Serial.print("#YPR=");
     Serial.print(TO_DEG(yaw)); Serial.print(",");
     Serial.print(TO_DEG(pitch)); Serial.print(",");
     Serial.print(TO_DEG(roll)); Serial.println();
+    //}
   }
-}
 
 /*void output_calibration(int calibration_sensor)
 {
