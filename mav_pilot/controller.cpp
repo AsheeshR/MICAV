@@ -129,10 +129,10 @@ void update_state(float heading[])
 
 #ifdef DEBUG_SERIAL
 //    Serial.print("YPR Values : ");
-//    Serial.print(X[6]);   Serial.print(" ");
-//    Serial.print(X[7]);   Serial.print(" ");
-//    Serial.print(X[8]);   Serial.print(" ");
-//    Serial.println();
+    Serial.print(X[6]);   Serial.print(" ");
+    Serial.print(X[7]);   Serial.print(" ");
+    Serial.print(X[8]);   Serial.print(" ");
+    Serial.println();
 #endif
 
 

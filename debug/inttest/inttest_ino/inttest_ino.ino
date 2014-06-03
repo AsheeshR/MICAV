@@ -1,3 +1,5 @@
+#include <PinChangeInt.h>
+
 // PinChangeIntExample, version 1.1 Sun Jan 15 06:24:19 CST 2012
 // See the Wiki at http://code.google.com/p/arduino-pinchangeint/wiki for more information.
 //-------- define these in your sketch, if applicable ----------------------------------------------------------
@@ -13,7 +15,7 @@
 // #define       DISABLE_PCINT_MULTI_SERVICE
 //-------- define the above in your sketch, if applicable ------------------------------------------------------
 #define PINMODE
-#include <PinChangeInt.h>
+#include <PinChangeInt.h>q
 
 // This example demonstrates a configuration of 3 interrupting pins and 2 interrupt functions.
 // All interrupts are serviced immediately, but one of the pins (pin 4) will show you immediately
@@ -146,7 +148,11 @@ void loop() {
   uint8_t count;
 //  Serial.print(".");
   delay(5);
+  Serial.println("YPR:");
+  Serial.println(value);
+  Serial.println(yvalue);
   Serial.println(pvalue);
+  Serial.println(rvalue);
   /*for (i=0; i < 20; i++) {
     if (interrupt_count[i] != 0) {
       count=interrupt_count[i];
