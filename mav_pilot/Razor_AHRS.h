@@ -25,14 +25,14 @@
 #define OUTPUT__DATA_INTERVAL 12  // in milliseconds
 
 // Output mode definitions (do not change)
-#define OUTPUT__MODE_CALIBRATE_SENSORS 0 // Outputs sensor min/max values as text for manual calibration
+//#define OUTPUT__MODE_CALIBRATE_SENSORS 0 // Outputs sensor min/max values as text for manual calibration
 #define OUTPUT__MODE_ANGLES 1 // Outputs yaw/pitch/roll in degrees
-#define OUTPUT__MODE_SENSORS_CALIB 2 // Outputs calibrated sensor values for all 9 axes
-#define OUTPUT__MODE_SENSORS_RAW 3 // Outputs raw (uncalibrated) sensor values for all 9 axes
-#define OUTPUT__MODE_SENSORS_BOTH 4 // Outputs calibrated AND raw sensor values for all 9 axes
+//#define OUTPUT__MODE_SENSORS_CALIB 2 // Outputs calibrated sensor values for all 9 axes
+//#define OUTPUT__MODE_SENSORS_RAW 3 // Outputs raw (uncalibrated) sensor values for all 9 axes
+//#define OUTPUT__MODE_SENSORS_BOTH 4 // Outputs calibrated AND raw sensor values for all 9 axes
 // Output format definitions (do not change)
 #define OUTPUT__FORMAT_TEXT 0 // Outputs data as text
-#define OUTPUT__FORMAT_BINARY 1 // Outputs data as binary float
+//#define OUTPUT__FORMAT_BINARY 1 // Outputs data as binary float
 
 // Select your startup output mode and format here!
 //int output_mode = OUTPUT__MODE_ANGLES;
@@ -54,7 +54,7 @@
 // It is not necessary to set this! It just makes life easier when writing code for
 // the receiving side. The Processing test sketch also works without setting this.
 // NOTE: When using this, OUTPUT__STARTUP_STREAM_ON has no effect!
-#define OUTPUT__HAS_RN_BLUETOOTH false  // true or false
+//#define OUTPUT__HAS_RN_BLUETOOTH false  // true or false
 
 
 // SENSOR CALIBRATION
@@ -135,7 +135,7 @@ const float magn_ellipsoid_transform[3][3] = {{0.902, -0.00354, 0.000636}, {-0.0
 // When set to true, gyro drift correction will not be applied
 #define DEBUG__NO_DRIFT_CORRECTION false
 // Print elapsed time after each I/O loop
-#define DEBUG__PRINT_LOOP_TIME false
+//#define DEBUG__PRINT_LOOP_TIME false
 
 
 /*****************************************************************/
@@ -204,10 +204,10 @@ const float magn_ellipsoid_transform[3][3] = {{0.902, -0.00354, 0.000636}, {-0.0
 void read_sensors();
 void reset_sensor_fusion();
 void compensate_sensor_errors();
-void check_reset_calibration_session();
+//void check_reset_calibration_session();
 void turn_output_stream_on();
-void turn_output_stream_off();
-char readChar();
+//void turn_output_stream_off();
+//char readChar();
 
 void Normalize(void);
 void Drift_correction(void);
@@ -231,10 +231,10 @@ void Matrix_Vector_Multiply(const float a[3][3], const float b[3], float out[3])
 void init_rotation_matrix(float m[3][3], float yaw, float pitch, float roll);
 void init_rotation_matrix(float m[3][3], float yaw, float pitch, float roll);
 void output_angles();
-void output_calibration(int calibration_sensor);
-void output_sensors_text(char raw_or_calibrated);
-void output_sensors_binary();
-void output_sensors();
+//void output_calibration(int calibration_sensor);
+//void output_sensors_text(char raw_or_calibrated);
+//void output_sensors_binary();
+//void output_sensors();
 
 
 
