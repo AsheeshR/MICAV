@@ -5,12 +5,11 @@
 
 #include "controller.h"
 
-#define MIRROR_PI(theeta) ((theeta>=0.00)?(180.00-theeta):(-180.00-(theeta)))
+#define MIRROR_PI(theeta) ((theeta>=0)?(180-theeta):(-180-(theeta)))
 
 
 static int16_t X[12] = {0, };
-static int16_t Y[12] = {0, };
-
+//static int16_t Y[12] = {0, };
 static int16_t U[4] = {0, };
 /* Output Matrix for Control System
  * 0 : Thrust
@@ -25,7 +24,7 @@ static int16_t thrust[4]/*, heading[3]*/; /* WARNING: IMU RETURNS FLOATS! */
 void update_input()
 {
 
-    update_channels(channels);
+//    update_channels(channels);
     
     /* Calculate Errors */
     //U[0] = /*X[5] -*/ map(channels[0], CHANNEL1_MIN, CHANNEL1_MAX, -100, 100);
@@ -34,29 +33,29 @@ void update_input()
     U[0] = map(U[0], CHANNEL1_MIN, CHANNEL1_MAX, THRESHOLD_MOTOR0_MIN, THRESHOLD_MOTOR0_MAX); /* This is usable only if all motors are in the same range */
     
     //U[1] = X[9] - map(channels[1], CHANNEL2_MIN, CHANNEL2_MAX, MIN_DYAW, MAX_DYAW); 
-    //U[2] = X[10] - map(channels[2], CHANNEL3_MIN, CHANNEL3_MAX, MIN_DPITCH, MAX_DPITCH);
+    U[2] = map(channels[2], CHANNEL3_MIN, CHANNEL3_MAX, MIN_DPITCH, MAX_DPITCH) - X[10];
     U[3] = map(channels[3], CHANNEL4_MIN, CHANNEL4_MAX, MIN_ROLL, MAX_ROLL) - X[8];
 
     /* Yaw Scaling */
     /* U[0]/=4;    U[1]/=4;    U[2]/=4;*/
 
 #ifdef DEBUG_SERIAL
-    Serial.print("Map Values : ");
-    Serial.print(U[0]);     Serial.print(" ");
+//    Serial.print("Map Values : ");
+//    Serial.print(U[0]);     Serial.print(" ");
 //    Serial.print(map(channels[1], CHANNEL2_MIN, CHANNEL2_MAX, MIN_DYAW, MAX_DYAW));     Serial.print(" ");
 //    Serial.print(map(channels[2], CHANNEL3_MIN, CHANNEL3_MAX, MIN_DPITCH, MAX_DPITCH));     Serial.print(" ");
 //    Serial.print(map(channels[3], CHANNEL4_MIN, CHANNEL4_MAX, MIN_DROLL, MAX_DROLL));     Serial.print(" ");
-    Serial.print(U[3]);     Serial.print(" ");
-    Serial.println();
+//    Serial.println(U[3]);     //Serial.print(" ");
+//    Serial.println();
 #endif
     
 
 #ifdef DEBUG_SERIAL
-    Serial.print("U Values : Pre PID ");
+//    Serial.print("U Values : Pre PID ");
 //    Serial.print(U[0]);     Serial.print(" ");
 //    Serial.print(U[1]);     Serial.print(" ");
 //    Serial.print(U[2]);     Serial.print(" ");
-    Serial.println(U[3]);//     Serial.println();
+//    Serial.println(U[3]);//     Serial.println();
 //    Serial.println();
 #endif
 
@@ -70,7 +69,7 @@ void update_input()
 //    Serial.print(U[0]);     Serial.print(" ");
 //    Serial.print(U[1]);     Serial.print(" ");
 //    Serial.print(U[2]);     Serial.print(" ");
-    Serial.println(U[3]);//     Serial.println();
+//    Serial.println(U[3]);//     Serial.println();
 //    Serial.println();
 #endif
 
@@ -79,14 +78,14 @@ void update_input()
     /* This transform E(t) -> U(t) */
     /* U[0] = pid_daltitude(U[0]); No feedback yet*/
 //    U[1] = pid_dyaw(U[1]); 
-//    U[2] = pid_dpitch(U[2]);
+    U[2] = pid_pitch(U[2]);
     U[3] = pid_roll(U[3]);
 
 #ifdef DEBUG_SERIAL
     Serial.print("U Values : ");
 //    Serial.print(U[0]);     Serial.print(" ");
 //    Serial.print(U[1]);     Serial.print(" ");
-//    Serial.print(U[2]);     Serial.print(" ");
+    Serial.print(U[2]);     Serial.print(" ");
     Serial.println(U[3]);//     Serial.println();
 //    Serial.println();
 #endif
@@ -98,7 +97,6 @@ void update_state(float heading[])
 			       * If the heading array is not updated, then it gets multiplied by 10 twice, as it retains the previously
 			       * modified values. To handle this case, a local copy of the heading array is used 
 			       */
-
     /* X */
     //update_IMU();
     //imu_loop(ypr2);
@@ -111,11 +109,10 @@ void update_state(float heading[])
     //X[5] = X[5] + X[2]; //dz
     
     /* Since our domain is int, and heading carries decimal digits after
-       decimal point, upgrading it to int with 1 digit loss of information*/
+       decimal point, upgrading it to int with 1 digit loss of information */
     local_heading[0] = heading[0] * 10; 
     local_heading[1] = heading[1] * 10; 
-    local_heading[2] = (MIRROR_PI(heading[2])) * 10;  /* Since our IMU is inverted */ 
-//    local_heading[2] *= 10;
+    local_heading[2] = (MIRROR_PI(heading[2])) * 10;  /* Since our IMU is inverted */
 
     
 //    X[9] = local_heading[0] - X[6]; //dYAW
@@ -133,8 +130,8 @@ void update_state(float heading[])
 //    Serial.print("YPR Values : ");
     Serial.print(X[6]);   Serial.print(" ");
     Serial.print(X[7]);   Serial.print(" ");
-    Serial.print(X[8]);   Serial.print(" ");
-    Serial.println();
+    Serial.println(X[8]);   //Serial.print(" ");
+//    Serial.println();
 #endif
 
 
@@ -187,13 +184,13 @@ void write_output()
     update_motors(/*Servo * esc[],*/thrust);
 
 
-#ifdef DEBUG_SERIAL
+//#ifdef DEBUG_SERIAL
 //    Serial.print("Motors Values : ");
 //    Serial.print(thrust[0]);  Serial.print(" ");
 //    Serial.print(thrust[1]);  Serial.print(" ");
 //    Serial.print(thrust[2]);  Serial.print(" ");
 //    Serial.print(thrust[3]);  Serial.print(" ");
 //    Serial.println();
-#endif
+//#endif
 
 }

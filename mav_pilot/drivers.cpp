@@ -83,6 +83,9 @@ void update_channels(uint16_t channels[])
 */
 /* ISR based Control Inputs */
 
+volatile byte update = 0;
+
+
 uint8_t tmode;
 uint32_t tt1=0;
 volatile uint16_t tvalue;
@@ -92,6 +95,7 @@ void updatethrottle()
     tmode=PCintPort::pinState;  
     if(tmode)    tt1 = micros();
     else    tvalue = micros()-tt1;
+    update = 1;
 }
 
 uint8_t ymode;
@@ -103,6 +107,7 @@ void updateyaw()
   ymode=PCintPort::pinState;  
   if(ymode)    yt1 = micros();
   else yvalue = micros()-yt1;
+  update = 1;
 }
 
 uint8_t rmode;
@@ -114,6 +119,7 @@ void updateroll()
     rmode=PCintPort::pinState;  
     if(rmode)   rt1 = micros();
     else    rvalue = micros()-rt1;
+    update = 1;
 }
 
 
@@ -126,6 +132,7 @@ void updatepitch()
     pmode=PCintPort::pinState;      
     if(pmode)    pt1 = micros();
     else pvalue = micros()-pt1;
+    update = 1;
 }
 
 
@@ -152,16 +159,21 @@ void setup_channels()
 void update_channels(uint16_t channels[])
 {
 
-    byte sregRestore = SREG;
-    cli(); // clear the global interrupt enable flag
+    if(update == 0) return;
 
+    /* else if(update == 1) */
+
+    byte sregRestore = SREG; //save status register value
+    cli(); // clear the global interrupt enable flag to disable interrupts
+    update = 0;
+    
     channels[0] = tvalue;//pulseIn(PIN_THROTTLE, HIGH, 20000);
     channels[1] = yvalue;//pulseIn(PIN_YAW, HIGH, 20000);
     channels[2] = pvalue;//pulseIn(PIN_PITCH, HIGH, 20000);
     channels[3] = rvalue;//pulseIn(PIN_ROLL, HIGH, 20000);
-  
+    
     SREG = sregRestore; // restore the status register to its previous value
-
+    
 //    channels[4] = pulseIn(PIN_AUX1, HIGH, 25000);
 //    channels[5] = pulseIn(PIN_AUX2, HIGH, 25000);
 //    channels[6] = pulseIn(PIN_AUTO, HIGH, 25000);
