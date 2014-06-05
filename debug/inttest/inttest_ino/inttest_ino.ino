@@ -15,7 +15,7 @@
 // #define       DISABLE_PCINT_MULTI_SERVICE
 //-------- define the above in your sketch, if applicable ------------------------------------------------------
 #define PINMODE
-#include <PinChangeInt.h>q
+#include <PinChangeInt.h>
 
 // This example demonstrates a configuration of 3 interrupting pins and 2 interrupt functions.
 // All interrupts are serviced immediately, but one of the pins (pin 4) will show you immediately
